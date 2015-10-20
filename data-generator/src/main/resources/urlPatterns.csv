@@ -1,0 +1,14 @@
+POST,user/authenticate
+POST,user/logout
+POST,user/authorize
+POST,user/register
+PUT,user/register
+GET,data/category
+GET,data/category/[categoryId]
+GET,data/product?categoryId=[categoryId]
+GET,data/product?searchString=[searchString]
+PUT,data/product/[productId]?action=[action]
+POST,data/cart/purchase/products=[productIds]
+GET,view/home
+GET,view/category
+GET,view/product

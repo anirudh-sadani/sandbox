@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -19,17 +18,25 @@ public class JSONDataPojo {
 	HTTPDataPojo httpData;
 	long timestamp;
 	
-	List<ZipRange> validZipRanges;
+	static List<ZipRange> validZipRanges;
 	
 	public JSONDataPojo()
 	{
 		
-		validZipRanges = populateZipRanges();
+		
+		setOriginatingIPAddress
+		(
+			ThreadLocalRandom.current().nextInt(0, 256) + "." +
+					ThreadLocalRandom.current().nextInt(0, 256) + "." +
+					ThreadLocalRandom.current().nextInt(0, 256) + "." +
+					ThreadLocalRandom.current().nextInt(0, 256)
+		);
+		populateZipcode();
 		httpData = new HTTPDataPojo();
-		System.out.println(validZipRanges);
+		
 	}
 	
-	public List<ZipRange> populateZipRanges()
+	static 
 	{
 		List<ZipRange> populatedRanges = new ArrayList<ZipRange>();
 		
@@ -38,15 +45,9 @@ public class JSONDataPojo {
 		try {
 
 			String sCurrentLine;
-
 			br = new BufferedReader(new FileReader("/home/IMPETUS/asadani/codebase/rampup/sandbox/data-generator/src/main/resources/zipranges.txt"));
-
 			while ((sCurrentLine = br.readLine()) != null) {
-				//System.out.println(sCurrentLine);
-				
 				StringTokenizer str = new StringTokenizer(sCurrentLine, "-");
-				//System.out.println(str.nextToken());
-				//System.out.println(str.nextToken());
 				populatedRanges.add(new ZipRange(Integer.parseInt(str.nextToken()), Integer.parseInt(str.nextToken())));
 			}
 
@@ -60,20 +61,14 @@ public class JSONDataPojo {
 			}
 		}
 			
-		return populatedRanges;
+		validZipRanges = populatedRanges;
 	}
 	
-	public JSONDataPojo populateModel()
+	public void populateModel()
 	{
-		JSONDataPojo model = new JSONDataPojo();
+		populateHTTPData();		
+		populateTimestamp();
 		
-		model.populateZipcode();
-		
-		model.populateIPAddress();
-		model.populateHTTPData();		
-		model.populateTimestamp();
-		
-		return model;		
 	}
 	
 
@@ -88,15 +83,8 @@ public class JSONDataPojo {
 		
 	}
 
-
-	private void populateIPAddress() {
-		setOriginatingIPAddress("192.168.64.61");
-		
-	}
-
 	private void populateZipcode() {
-		Random randomNumberGenerator = new Random(validZipRanges.size());
-		ZipRange zipRange = validZipRanges.get(ThreadLocalRandom.current().nextInt(0, validZipRanges.size() + 1));
+		ZipRange zipRange = validZipRanges.get(ThreadLocalRandom.current().nextInt(0, validZipRanges.size()));
 		
 		setZipcode(zipRange.getStartZip() + ThreadLocalRandom.current().nextInt(0, zipRange.getDifference() + 1) + "");
 	}
@@ -134,13 +122,6 @@ public class JSONDataPojo {
 		this.timestamp = timestamp;
 	}	
 	
-	public static void main(String args[])
-	{
-		JSONDataPojo jsd = new JSONDataPojo();
-		jsd.populateZipRanges();
-		jsd = jsd.populateModel();
-		System.out.println(jsd);
-	}
 	
 	public String toString()
 	{
