@@ -23,6 +23,12 @@ public class HTTPDataPojo {
 	String headerParamAuthToken;
 	String httpUrl;
 	
+	public HTTPDataPojo(String id, String token)
+	{
+		headerParamUserId = id;
+		headerParamAuthToken = token;
+	}
+	
 	static List<URLPattern> urls;
 	
 	static

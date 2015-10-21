@@ -26,13 +26,15 @@ public class JSONDataPojo {
 		
 		setOriginatingIPAddress
 		(
-			ThreadLocalRandom.current().nextInt(0, 256) + "." +
+				Thread.currentThread().getName() + ":" + ThreadLocalRandom.current().nextInt(0, 256) + "." +
 					ThreadLocalRandom.current().nextInt(0, 256) + "." +
 					ThreadLocalRandom.current().nextInt(0, 256) + "." +
 					ThreadLocalRandom.current().nextInt(0, 256)
 		);
+		
 		populateZipcode();
-		httpData = new HTTPDataPojo();
+		
+		httpData = new HTTPDataPojo(ThreadLocalRandom.current().nextInt(19999, 2564355) + "", "example");
 		
 	}
 	
