@@ -18,6 +18,7 @@ public class JSONDataPojo {
 	HTTPDataPojo httpData;
 	long timestamp;
 	
+	static long counter = 1;
 	static List<ZipRange> validZipRanges;
 	
 	public JSONDataPojo()
@@ -26,10 +27,10 @@ public class JSONDataPojo {
 		
 		setOriginatingIPAddress
 		(
-				Thread.currentThread().getName() + ":" + ThreadLocalRandom.current().nextInt(0, 256) + "." +
-					ThreadLocalRandom.current().nextInt(0, 256) + "." +
-					ThreadLocalRandom.current().nextInt(0, 256) + "." +
-					ThreadLocalRandom.current().nextInt(0, 256)
+			ThreadLocalRandom.current().nextInt(0, 256) + "." +
+			ThreadLocalRandom.current().nextInt(0, 256) + "." +
+			ThreadLocalRandom.current().nextInt(0, 256) + "." +
+			ThreadLocalRandom.current().nextInt(0, 256)
 		);
 		
 		populateZipcode();
@@ -66,16 +67,27 @@ public class JSONDataPojo {
 		validZipRanges = populatedRanges;
 	}
 	
-	public void populateModel()
+	public void populateModel(Calendar startDate)
 	{
 		populateHTTPData();		
-		populateTimestamp();
+		populateTimestamp(startDate);
 		
 	}
 	
 
-	private void populateTimestamp() {
-		setTimestamp(Calendar.getInstance().getTimeInMillis());
+	private void populateTimestamp(Calendar startDate) {
+		
+		startDate.set(
+				startDate.get(Calendar.YEAR), 
+				startDate.get(Calendar.MONTH), 
+				startDate.get(Calendar.DATE), 
+				Calendar.getInstance().get(Calendar.HOUR), 
+				Calendar.getInstance().get(Calendar.MINUTE), 
+				(int)(Calendar.getInstance().get(Calendar.SECOND) + counter));
+				
+				
+		counter++;		
+		setTimestamp(startDate.getTimeInMillis());
 		
 	}
 
