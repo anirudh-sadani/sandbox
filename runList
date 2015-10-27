@@ -1,0 +1,5 @@
+ hadoop-2.7.0/bin/hadoop jar /home/IMPETUS/asadani/codebase/rampup/sandbox/data-flattener/target/data-flattener-0.0.1-SNAPSHOT.jar com.asadani.flattener.JSONDataFlattener /home/asadani/rampup/input/user-traffic.log /home/asadani/rampup/output/
+
+
+mvn exec:java
+

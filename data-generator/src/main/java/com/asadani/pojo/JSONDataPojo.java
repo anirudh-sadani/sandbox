@@ -77,7 +77,10 @@ public class JSONDataPojo {
 
 	private void populateTimestamp(Calendar startDate) {
 		
-		startDate.set(
+		Calendar temp = Calendar.getInstance();
+		
+		//temp.setTimeInMillis(startDate.getTimeInMillis());
+		temp.set(
 				startDate.get(Calendar.YEAR), 
 				startDate.get(Calendar.MONTH), 
 				startDate.get(Calendar.DATE), 
@@ -87,7 +90,7 @@ public class JSONDataPojo {
 				
 				
 		counter++;		
-		setTimestamp(startDate.getTimeInMillis());
+		setTimestamp(temp.getTimeInMillis());
 		
 	}
 
