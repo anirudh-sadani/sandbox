@@ -70,11 +70,11 @@ public class HTTPDataPojo {
 	public String toString()
 	{
 		return "{" + 
-				"httpMethod:" + httpMethod + ", " +
-				"httpUrl:" + httpUrl + ", " +
-				"headerParamAuthToken:" + headerParamAuthToken+ ", " +
-				"headerParamUserId:" + headerParamUserId +
-				"}";
+				"httpMethod:'" + httpMethod + "', " +
+				"httpUrl:'" + httpUrl + "', " +
+				"headerParamAuthToken:'" + headerParamAuthToken+ "', " +
+				"headerParamUserId:'" + headerParamUserId +
+				"'}";
 	}
 
 }

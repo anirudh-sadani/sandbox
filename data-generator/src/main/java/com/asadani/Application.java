@@ -12,6 +12,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import com.asadani.pojo.JSONDataPojo;
 
@@ -54,13 +56,14 @@ public class Application implements Callable<List<String>> {
 
 	public static void main(String args[]) {
 		
+
 		ExecutorService executor = Executors.newFixedThreadPool(50);
 		
 		List<Future<List<String>>> list = new ArrayList<Future<List<String>>>();
 		
 		Calendar cal = Calendar.getInstance();
 		
-		cal.set(2015, 9, 15);
+		cal.set(2015, 8, 22);
 		
 		long days = (Calendar.getInstance().getTimeInMillis() - cal.getTimeInMillis())/(1000*60*60*24);
 		

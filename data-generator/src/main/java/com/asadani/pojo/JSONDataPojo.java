@@ -140,11 +140,11 @@ public class JSONDataPojo {
 	public String toString()
 	{
 		return "{" + 
-					"originatingIPAddress:" + originatingIPAddress + ", " +
-					"timestamp:" + timestamp + ", " +
+					"originatingIPAddress:'" + originatingIPAddress + "', " +
+					"timestamp:'" + timestamp + "', " +
 					"httpData:" + httpData.toString() + ", " +
-					"zipcode:" + zipcode +
-					"}";
+					"zipcode:'" + zipcode +
+					"'}";
 	}
 
 }
