@@ -3,3 +3,33 @@
 
 mvn exec:java
 
+
+http://stackoverflow.com/questions/29784532/pig-keeps-trying-to-connect-to-job-history-server-and-fails
+
+
+<property>
+<name>mapreduce.jobhistory.address</name>
+<value>cm:10020</value>
+<description>Host and port for Job History Server (default 0.0.0.0:10020)</description>
+</property>
+
+ps ax | grep -e JobHistory
+
+/home/asadani/rampup/output/days
+
+0.154.253.186,1444501382355,5208,POST,user/register,example,asdf
+
+A = load '/home/asadani/rampup/output/days' USING PigStorage(',') AS (clientIPAddress:bytearray, timestamp:bytearray, zipcode:bytearray, httpMethod:bytearray, httpURL:bytearray, userId:bytearray);
+
+A = load '/home/asadani/rampup/output/days/10/21_927-r-00021' USING PigStorage(',') AS (clientIPAddress:bytearray, timestamp:bytearray, zipcode:bytearray, httpMethod:bytearray, httpURL:bytearray, userId:bytearray);
+
+
+ILLUSTRATE A;
+
+
+grunt> B = GROUP A BY httpURL;
+grunt> C = FOREACH B GENERATE COUNT ($0);
+
+
+hadoop-2.7.0/sbin/mr-jobhistory-daemon.sh start historyserver
+
