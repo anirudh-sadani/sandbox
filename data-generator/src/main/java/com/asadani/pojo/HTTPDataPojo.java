@@ -62,8 +62,8 @@ public class HTTPDataPojo {
 		URLPattern up = urls.get(ThreadLocalRandom.current().nextInt(0, urls.size()));
 		this.httpMethod = up.getHttpMethod();
 		this.httpUrl = up.getRequestURL();
-		this.headerParamAuthToken = "asdf";
-		this.headerParamUserId= "example";
+		//this.headerParamAuthToken = "asdf";
+		//this.headerParamUserId= "example";
 
 	}
 	

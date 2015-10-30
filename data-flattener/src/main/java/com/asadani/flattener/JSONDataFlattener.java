@@ -31,11 +31,14 @@ public class JSONDataFlattener {
 				JSONObject eventData = new JSONObject(value.toString());
 				JSONObject httpData = eventData.getJSONObject("httpData");
 				
+				long timeInMillis = Long.parseLong((String)eventData.get("timestamp"));
 				
+				Calendar temp = Calendar.getInstance();
+				temp.setTimeInMillis(timeInMillis);
 				
 				sb.append(eventData.get("originatingIPAddress"));
 				sb.append(",");
-				sb.append(eventData.get("timestamp"));
+				sb.append(timeInMillis);
 				sb.append(",");
 				sb.append(eventData.get("zipcode"));
 				sb.append(",");
@@ -46,6 +49,12 @@ public class JSONDataFlattener {
 				sb.append(httpData.get("headerParamUserId"));
 				sb.append(",");
 				sb.append(httpData.get("headerParamAuthToken"));
+				sb.append(",");
+				sb.append(temp.get(Calendar.DATE));
+				sb.append(",");
+				sb.append(temp.get(Calendar.MONTH) + 1);
+				sb.append(",");
+				sb.append(temp.get(Calendar.YEAR));
 
 				
 				context.write(new Text(sb.toString()),  NullWritable.get());
@@ -69,7 +78,7 @@ public class JSONDataFlattener {
 				
 				time.setTimeInMillis(Long.parseLong(valuesStr[1]));
 				
-				return time.get(Calendar.DATE);
+				return (time.get(Calendar.DATE)-1);
 	           
 	        }
 	    }

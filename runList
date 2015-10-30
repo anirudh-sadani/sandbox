@@ -1,4 +1,12 @@
- hadoop-2.7.0/bin/hadoop jar /home/IMPETUS/asadani/codebase/rampup/sandbox/data-flattener/target/data-flattener-0.0.1-SNAPSHOT.jar com.asadani.flattener.JSONDataFlattener /home/asadani/rampup/input/user-traffic.log /home/asadani/rampup/output/
+hadoop-2.7.0/bin/hdfs dfs -rmr -skipTrash /home/asadani/rampup/output*
+hadoop-2.7.0/bin/hdfs dfs -rm -skipTrash /home/asadani/rampup/input/*
+hadoop-2.7.0/bin/hdfs dfs -copyFromLocal ../user-traffic.log /home/asadani/rampup/input
+
+ 
+
+
+
+hadoop-2.7.0/bin/hadoop jar /home/IMPETUS/asadani/codebase/rampup/sandbox/data-flattener/target/data-flattener-0.0.1-SNAPSHOT.jar com.asadani.flattener.JSONDataFlattener /home/asadani/rampup/input/user-traffic.log /home/asadani/rampup/output/
 
 
 mvn exec:java
@@ -19,16 +27,31 @@ ps ax | grep -e JobHistory
 
 0.154.253.186,1444501382355,5208,POST,user/register,example,asdf
 
-A = load '/home/asadani/rampup/output/days' USING PigStorage(',') AS (clientIPAddress:bytearray, timestamp:bytearray, zipcode:bytearray, httpMethod:bytearray, httpURL:bytearray, userId:bytearray);
+A = load '/home/asadani/rampup/output/days/10/21_927-r-00021' USING PigStorage(',') AS (clientIPAddress:bytearray, timestamp:bytearray, zipcode:bytearray, httpMethod:bytearray, httpURL:bytearray, userId:bytearray, userAuthToken:bytearray, eventDate:int, eventMonth:int, eventYear:int);
 
-A = load '/home/asadani/rampup/output/days/10/21_927-r-00021' USING PigStorage(',') AS (clientIPAddress:bytearray, timestamp:bytearray, zipcode:bytearray, httpMethod:bytearray, httpURL:bytearray, userId:bytearray);
+===============WORKING================
+
+FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, eventDate:chararray, eventMonth:chararray, eventYear:chararray);
+
+FLAT_DATA_WITH_DATE = foreach FLAT_DATA generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, CONCAT(CONCAT(CONCAT((chararray)eventDate, '-'), (chararray)eventMonth, '-'), (chararray)eventYear) AS eventDateCon:chararray;
+
+GROUPED_BY_DAY = GROUP FLAT_DATA_WITH_DATE BY eventDateCon;
+
+COUNT_HITS_BY_DAY = FOREACH GROUPED_BY_DAY GENERATE group as myVar, COUNT(FLAT_DATA_WITH_DATE) as countForDay;
+
+COUNT_HITS_BY_DAY_SUMMARY = FOREACH COUNT_HITS_BY_DAY GENERATE myVar, countForDay;
+
+ILLUSTRATE COUNT_HITS_BY_DAY_SUMMARY;
+
+===============WORKING================
 
 
-ILLUSTRATE A;
+B = GROUP A BY userAuthToken;
 
-
-grunt> B = GROUP A BY httpURL;
-grunt> C = FOREACH B GENERATE COUNT ($0);
+C = FOREACH B {
+SESSION_ACTIVITY = ORDER A BY timestamp;
+GENERATE SESSION_ACTIVITY, COUNT(A);
+};
 
 
 hadoop-2.7.0/sbin/mr-jobhistory-daemon.sh start historyserver
