@@ -29,14 +29,41 @@ ps ax | grep -e JobHistory
 
 A = load '/home/asadani/rampup/output/days/10/21_927-r-00021' USING PigStorage(',') AS (clientIPAddress:bytearray, timestamp:bytearray, zipcode:bytearray, httpMethod:bytearray, httpURL:bytearray, userId:bytearray, userAuthToken:bytearray, eventDate:int, eventMonth:int, eventYear:int);
 
-
+===============WORKING================
 
 FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, eventDate:chararray, eventMonth:chararray, eventYear:chararray);
 
 FLAT_DATA_WITH_DATE = foreach FLAT_DATA generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, CONCAT(CONCAT(CONCAT((chararray)eventDate, '-'), (chararray)eventMonth, '-'), (chararray)eventYear) AS eventDateCon:chararray;
 
+GROUPED_BY_DAY = GROUP FLAT_DATA_WITH_DATE BY eventDateCon;
 
-ILLUSTRATE A;
+COUNT_HITS_BY_DAY = FOREACH GROUPED_BY_DAY GENERATE group as myVar, COUNT(FLAT_DATA_WITH_DATE) as countForDay;
+
+COUNT_HITS_BY_DAY_SUMMARY = FOREACH COUNT_HITS_BY_DAY GENERATE (chararray)myVar as day, (int)countForDay as count;
+
+ILLUSTRATE COUNT_HITS_BY_DAY_SUMMARY;
+
+===============WORKING================
+
+<dependency>
+	<groupId>org.cloudera.htrace</groupId>
+	<artifactId>htrace-core</artifactId>
+	<version>2.05</version>
+</dependency>
+
+ export HADOOP_CLASSPATH=$CLASSPATH:/home/IMPETUS/asadani/codebase/rampup/sandbox/data-generator/target/lib/htrace-core-2.05.jar:$HADOOP_CLASSPATH
+
+		
+
+STORE COUNT_HITS_BY_DAY_SUMMARY INTO 'hbase://pig_table' USING org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:count');
+
+
+PIG_CLASSPATH=/usr/lib/hbase/hbase.jar:/usr/lib/zookeeper/zookeeper-3.4.5-cdh4.4.0.jar /usr/bin/pig /home/training/Load_HBase_Customers.pig
+
+
+
+
+
 
 
 B = GROUP A BY userAuthToken;
@@ -48,4 +75,21 @@ GENERATE SESSION_ACTIVITY, COUNT(A);
 
 
 hadoop-2.7.0/sbin/mr-jobhistory-daemon.sh start historyserver
+
+
+======================================
+
+Most visited pages by users
+
+FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, eventDate:chararray, eventMonth:chararray, eventYear:chararray);
+
+FLAT_DATA_WITH_MONTH = foreach FLAT_DATA generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, CONCAT(CONCAT((chararray)eventDate, '-'), (chararray)eventMonth, '-') AS eventMonthCon:chararray;
+
+GROUPED_BY_MONTH = GROUP FLAT_DATA_WITH_MONTH BY (eventMonthCon, httpURL);
+
+COUNT_HITS_PER_PAGE_BY_MONTH = FOREACH GROUPED_BY_DAY GENERATE group as myVar, COUNT(FLAT_DATA_WITH_DATE) as countForDay;
+
+COUNT_HITS_BY_DAY_SUMMARY = FOREACH COUNT_HITS_BY_DAY GENERATE (chararray)myVar as day, (int)countForDay as count;
+
+ILLUSTRATE COUNT_HITS_BY_DAY_SUMMARY;
 

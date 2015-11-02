@@ -39,11 +39,31 @@ GROUPED_BY_DAY = GROUP FLAT_DATA_WITH_DATE BY eventDateCon;
 
 COUNT_HITS_BY_DAY = FOREACH GROUPED_BY_DAY GENERATE group as myVar, COUNT(FLAT_DATA_WITH_DATE) as countForDay;
 
-COUNT_HITS_BY_DAY_SUMMARY = FOREACH COUNT_HITS_BY_DAY GENERATE myVar, countForDay;
+COUNT_HITS_BY_DAY_SUMMARY = FOREACH COUNT_HITS_BY_DAY GENERATE (chararray)myVar as day, (int)countForDay as count;
 
 ILLUSTRATE COUNT_HITS_BY_DAY_SUMMARY;
 
 ===============WORKING================
+
+<dependency>
+	<groupId>org.cloudera.htrace</groupId>
+	<artifactId>htrace-core</artifactId>
+	<version>2.05</version>
+</dependency>
+
+ export HADOOP_CLASSPATH=$CLASSPATH:/home/IMPETUS/asadani/codebase/rampup/sandbox/data-generator/target/lib/htrace-core-2.05.jar:$HADOOP_CLASSPATH
+
+		
+
+STORE COUNT_HITS_BY_DAY_SUMMARY INTO 'hbase://pig_table' USING org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:count');
+
+
+PIG_CLASSPATH=/usr/lib/hbase/hbase.jar:/usr/lib/zookeeper/zookeeper-3.4.5-cdh4.4.0.jar /usr/bin/pig /home/training/Load_HBase_Customers.pig
+
+
+
+
+
 
 
 B = GROUP A BY userAuthToken;
@@ -55,4 +75,28 @@ GENERATE SESSION_ACTIVITY, COUNT(A);
 
 
 hadoop-2.7.0/sbin/mr-jobhistory-daemon.sh start historyserver
+
+
+======================================
+
+Most visited pages by users
+
+create 'MOST_VISITED_PAGES_BY_USERS', 'count'
+
+
+
+FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, eventDate:chararray, eventMonth:chararray, eventYear:chararray);
+
+FLAT_DATA_FILTERED = FILTER FLAT_DATA BY (httpURL matches 'view/home' or httpURL matches 'view/product' or httpURL matches 'view/category');
+
+
+FLAT_DATA_WITH_MONTH = foreach FLAT_DATA_FILTERED generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, CONCAT(CONCAT((chararray)eventMonth, '-'), (chararray)eventYear) AS eventMonthCon:chararray;
+
+GROUPED_BY_MONTH_PAGE = GROUP FLAT_DATA_WITH_MONTH BY (eventMonthCon, httpURL);
+
+COUNT_HITS_PER_PAGE_BY_MONTH = FOREACH GROUPED_BY_MONTH_PAGE GENERATE group as groupKey, COUNT(FLAT_DATA_WITH_MONTH) as countForMonth;
+
+COUNT_HITS_PER_PAGE_BY_MONTH_SUMMARY = FOREACH COUNT_HITS_PER_PAGE_BY_MONTH GENERATE groupKey, (int)countForMonth as count;
+
+STORE COUNT_HITS_PER_PAGE_BY_MONTH_SUMMARY INTO 'hbase://MOST_VISITED_PAGES_BY_USERS' USING org.apache.pig.backend.hadoop.hbase.HBaseStorage ('count:count');
 
