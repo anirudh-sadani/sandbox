@@ -186,6 +186,8 @@ LOAD DATA LOCAL INPATH '/home/IMPETUS/asadani/Installs/ml-100k/u.user' OVERWRITE
 
 select movietitle, rating_count from (select count(*) rating_count, movieid from u_data group by movieid having count(*) > 250) inner_data, moviedetails_data md where inner_data.movieid = md.movieid order by rating_count desc;
 
+select m.movietitle, avg(um.rating) as rate from user_movie_data um join moviedetails_data m where m.movieid = um.movieid  group by m.movietitle order by rate desc;
+
 select count(*) rating_count, userid from u_data group by userid having count(*) > 50 order by rating_count;
 
 select count(*) rating_count, userid from u_data group by userid order by rating_count;
@@ -240,10 +242,28 @@ MOVIE_RATING_SUMMARY_ORDERED_WITH_MOVIE_DETAILS = JOIN MOVIE_DATA BY movieid, MO
 FINAL_OUTPUT = FOREACH MOVIE_RATING_SUMMARY_ORDERED_WITH_MOVIE_DETAILS GENERATE movietitle, rating_sum;
 
 
+FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, eventDate:chararray, eventMonth:chararray, eventYear:chararray);
 
 
+((
+1.17.93.192,
+1446405370187,
+19947,
+PUT,
+user/register,
+rob@yetanothermail.com,
+asdf2alojvirw23kdfgnir9805d,
+2,
+11,
+2015
+,
+1875,
+1868))
+
+GROUPED_BY_SESSION = GROUP FLAT_DATA BY userAuthToken;
 
 
+SOMETHING = FOREACH GROUPED_BY_SESSION GENERATE com.asadani.ca.pig.udf.BagIterator(FLAT_DATA) AS bar;
 
 
 

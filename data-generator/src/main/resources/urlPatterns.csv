@@ -12,3 +12,4 @@ POST,data/cart/purchase/products=[productIds]
 GET,view/home
 GET,view/category
 GET,view/product
+GET,view/register

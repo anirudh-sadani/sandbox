@@ -186,6 +186,8 @@ LOAD DATA LOCAL INPATH '/home/IMPETUS/asadani/Installs/ml-100k/u.user' OVERWRITE
 
 select movietitle, rating_count from (select count(*) rating_count, movieid from u_data group by movieid having count(*) > 250) inner_data, moviedetails_data md where inner_data.movieid = md.movieid order by rating_count desc;
 
+select m.movietitle, avg(um.rating) as rate from user_movie_data um join moviedetails_data m where m.movieid = um.movieid  group by m.movietitle order by rate desc;
+
 select count(*) rating_count, userid from u_data group by userid having count(*) > 50 order by rating_count;
 
 select count(*) rating_count, userid from u_data group by userid order by rating_count;
@@ -228,4 +230,22 @@ MOVIE_RATING_SUMMARY_ORDERED_WITH_MOVIE_DETAILS = JOIN MOVIE_DATA BY movieid, MO
 FINAL_OUTPUT = FOREACH MOVIE_RATING_SUMMARY_ORDERED_WITH_MOVIE_DETAILS GENERATE movietitle, rating_sum;
 
 =================================================================================
+
+MOVIE_RATING = GROUP RATING_DATA BY movieid;
+
+MOVIE_RATING_SUMMARY = FOREACH MOVIE_RATING generate group, SUM(RATING_DATA.rating) as rating_sum;
+
+MOVIE_RATING_SUMMARY_ORDERED = ORDER MOVIE_RATING_SUMMARY BY rating_sum DESC;
+
+MOVIE_RATING_SUMMARY_ORDERED_WITH_MOVIE_DETAILS = JOIN MOVIE_DATA BY movieid, MOVIE_RATING_SUMMARY_ORDERED BY group;
+
+FINAL_OUTPUT = FOREACH MOVIE_RATING_SUMMARY_ORDERED_WITH_MOVIE_DETAILS GENERATE movietitle, rating_sum;
+
+
+
+
+
+
+
+
 

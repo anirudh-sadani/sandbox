@@ -18,6 +18,7 @@ public class JSONDataPojo {
 	String originatingIPAddress;
 	HTTPDataPojo httpData;
 	long timestamp;
+	String userBrowser;
 
 	static long counter = 1;
 	static List<ZipRange> validZipRanges;
@@ -35,6 +36,7 @@ public class JSONDataPojo {
 		SessionInfo randomSession = sessionInfoList.get(ThreadLocalRandom.current().nextInt(0, sessionInfoList.size()));
 		httpData = new HTTPDataPojo(randomSession.getUserId(), randomSession.getAuthToken());
 
+		userBrowser = "Chrome";
 	}
 
 	static {
