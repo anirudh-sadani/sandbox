@@ -13,3 +13,5 @@ GET,view/home
 GET,view/category
 GET,view/product
 GET,view/register
+GET,view/cart
+GET,view/payment

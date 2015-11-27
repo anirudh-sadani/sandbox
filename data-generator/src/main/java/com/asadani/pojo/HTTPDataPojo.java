@@ -70,14 +70,16 @@ public class HTTPDataPojo {
 	private String formAbsoluteURLFromPattern(String requestURL) {
 		String url = requestURL;
 		
-		if(url.contains("categoryId"))
-			url = url.replace("categoryId", "C-" + ThreadLocalRandom.current().nextInt(0, 100));
-		if(url.contains("productIds"))
-			url = url.replace("productIds", "P-" + ThreadLocalRandom.current().nextInt(0, 1000));
-		if(url.contains("searchString"))
-			url = url.replace("searchString", searchStrings[ThreadLocalRandom.current().nextInt(0, searchStrings.length-1)]);
-		if(url.contains("action"))
-			url = url.replace("action", productActions[ThreadLocalRandom.current().nextInt(0, productActions.length-1)]);
+		if(url.contains("[categoryId]"))
+			url = url.replace("[categoryId]", "C-" + ThreadLocalRandom.current().nextInt(0, 100));
+		if(url.contains("[productId]"))
+			url = url.replace("[productId]", "P-" + ThreadLocalRandom.current().nextInt(0, 1000));
+		if(url.contains("[productIds]"))
+			url = url.replace("[productIds]", "P-" + ThreadLocalRandom.current().nextInt(0, 1000));
+		if(url.contains("[searchString]"))
+			url = url.replace("[searchString]", searchStrings[ThreadLocalRandom.current().nextInt(0, searchStrings.length-1)]);
+		if(url.contains("[action]"))
+			url = url.replace("[action]", productActions[ThreadLocalRandom.current().nextInt(0, productActions.length-1)]);
 		return url;
 	}
 

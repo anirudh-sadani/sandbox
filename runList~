@@ -3,9 +3,6 @@ hadoop-2.7.0/bin/hdfs dfs -rm -skipTrash /home/asadani/rampup/input/*
 hadoop-2.7.0/bin/hdfs dfs -copyFromLocal ../user-traffic.log /home/asadani/rampup/input
 
  
-
-
-
 hadoop-2.7.0/bin/hadoop jar /home/IMPETUS/asadani/codebase/rampup/sandbox/data-flattener/target/data-flattener-0.0.1-SNAPSHOT.jar com.asadani.flattener.JSONDataFlattener /home/asadani/rampup/input/user-traffic.log /home/asadani/rampup/output/
 
 
@@ -29,11 +26,13 @@ ps ax | grep -e JobHistory
 
 A = load '/home/asadani/rampup/output/days/10/21_927-r-00021' USING PigStorage(',') AS (clientIPAddress:bytearray, timestamp:bytearray, zipcode:bytearray, httpMethod:bytearray, httpURL:bytearray, userId:bytearray, userAuthToken:bytearray, eventDate:int, eventMonth:int, eventYear:int);
 
+create 'HITS_BY_DAY', 'output'
+
 ===============WORKING================
 
-FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, eventDate:chararray, eventMonth:chararray, eventYear:chararray);
+FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, userBrowser:chararray,  eventDate:chararray, eventMonth:chararray, eventYear:chararray);
 
-FLAT_DATA_WITH_DATE = foreach FLAT_DATA generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, CONCAT(CONCAT(CONCAT((chararray)eventDate, '-'), (chararray)eventMonth, '-'), (chararray)eventYear) AS eventDateCon:chararray;
+FLAT_DATA_WITH_DATE = foreach FLAT_DATA generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, userBrowser, CONCAT(CONCAT(CONCAT((chararray)eventDate, '-'), (chararray)eventMonth, '-'), (chararray)eventYear) AS eventDateCon:chararray;
 
 GROUPED_BY_DAY = GROUP FLAT_DATA_WITH_DATE BY eventDateCon;
 
@@ -42,6 +41,9 @@ COUNT_HITS_BY_DAY = FOREACH GROUPED_BY_DAY GENERATE group as myVar, COUNT(FLAT_D
 COUNT_HITS_BY_DAY_SUMMARY = FOREACH COUNT_HITS_BY_DAY GENERATE (chararray)myVar as day, (int)countForDay as count;
 
 ILLUSTRATE COUNT_HITS_BY_DAY_SUMMARY;
+
+STORE COUNT_HITS_BY_DAY_SUMMARY INTO 'hbase://HITS_BY_DAY' USING org.apache.pig.backend.hadoop.hbase.HBaseStorage ('output:count');
+
 
 ===============WORKING================
 
@@ -134,118 +136,23 @@ GRANT SELECT,INSERT,UPDATE,DELETE,LOCK TABLES,EXECUTE ON metastore.* TO 'hive'@'
 
 $ sudo chkconfig mysql on
 
+REGISTER ... jar;
 
+FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, eventDate:chararray, eventMonth:chararray, eventYear:chararray);
 
-12557 dressing
-6642 loft
-33260 wardrobe
+GROUPED_BY_SESSION = GROUP FLAT_DATA BY userAuthToken;
 
-
-
-
-
-
-
-
-
-CREATE TABLE u_data (
-  userid INT,
-  movieid INT,
-  rating INT,
-  unixtime STRING)
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY '\t'
-STORED AS TEXTFILE;
-
-LOAD DATA LOCAL INPATH '/home/IMPETUS/asadani/Installs/ml-100k/u.data' OVERWRITE INTO TABLE u_data;
-
-
-CREATE TABLE moviedetails_data (
-movieid int, movietitle String, release_date String, video_release_date String, ImdbURL String, genreunknown int, Action int, Adventure int, Animation int, Childrens int, Comedy int, Crime int, Documentary int, Drama int, Fantasy int, Film_Noir int, Horror int, Musical int, Mystery int, Romance int, SciFi int, Thriller int, War int, Western int)
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY '|'
-STORED AS TEXTFILE;
-
-LOAD DATA LOCAL INPATH '/home/IMPETUS/asadani/Installs/ml-100k/u.item' OVERWRITE INTO TABLE moviedetails_data;
-
-CREATE TABLE userdetails_data (
-userid int, age int, gender String, occupation String, zip_code String)
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY '|'
-STORED AS TEXTFILE;
-
-LOAD DATA LOCAL INPATH '/home/IMPETUS/asadani/Installs/ml-100k/u.user' OVERWRITE INTO TABLE userdetails_data;
-
---CREATE TABLE movie_rating_count(rating_count int, movieid String);
-
---INSERT OVERWRITE TABLE movie_rating_count select count(*) rating_count, movieid from u_data group by movieid;
-
---select * from movie_rating_count order by rating_count desc limit 50;
-
---select movietitle, rating_count from movie_rating_count mrc, moviedetails_data md where mrc.movieid = md.movieid order by rating_count desc limit 50;
-
-select movietitle, rating_count from (select count(*) rating_count, movieid from u_data group by movieid having count(*) > 250) inner_data, moviedetails_data md where inner_data.movieid = md.movieid order by rating_count desc;
-
-select m.movietitle, avg(um.rating) as rate from user_movie_data um join moviedetails_data m where m.movieid = um.movieid  group by m.movietitle order by rate desc;
-
-select count(*) rating_count, userid from u_data group by userid having count(*) > 50 order by rating_count;
-
-select count(*) rating_count, userid from u_data group by userid order by rating_count;
-
-
-/home/asadani/rampup/movielens/u.data
-/home/asadani/rampup/movielens/u.user
-/home/asadani/rampup/movielens/u.item
-
-
-RATING_DATA = load '/home/asadani/rampup/movielens/u.data' USING PigStorage('\t') AS (userid:int, movieid:int, rating:int, timeunix:chararray);
-
-USER_DATA = load '/home/asadani/rampup/movielens/u.user' USING PigStorage('|') AS (userid:int, movieid:int, rating:int, timeunix:chararray);
-
-MOVIE_DATA = load '/home/asadani/rampup/movielens/u.item' USING PigStorage('|') AS (movieid:int, movietitle:chararray, release_date:chararray, video_release_date:chararray, ImdbURL:chararray, genreunknown:int, Action:int, Adventure:int, Animation:int, Childrens:int, Comedy:int, Crime:int, Documentary:int, Drama:int, Fantasy:int, Film_Noir:int, Horror:int, Musical:int, Mystery:int, Romance:int, SciFi:int, Thriller:int, War:int, Western:int);
-
-===============================================================
-
-USER_RATING = GROUP RATING_DATA BY userid;
-
-describe USER_RATING;
-
-USER_RATING_SUMMARY = FOREACH USER_RATING generate group, SUM(RATING_DATA.rating) as rating_sum;
-
-USER_RATING_SUMMARY_ORDERED = ORDER USER_RATING_SUMMARY BY rating_sum;
-
-dump USER_RATING_SUMMARY_ORDERED;
-
-
-===============================================================
-
-MOVIE_RATING = GROUP RATING_DATA BY movieid;
-
-MOVIE_RATING_SUMMARY = FOREACH MOVIE_RATING generate group, SUM(RATING_DATA.rating) as rating_sum;
-
-MOVIE_RATING_SUMMARY_ORDERED = ORDER MOVIE_RATING_SUMMARY BY rating_sum DESC;
-
-MOVIE_RATING_SUMMARY_ORDERED_WITH_MOVIE_DETAILS = JOIN MOVIE_DATA BY movieid, MOVIE_RATING_SUMMARY_ORDERED BY group;
-
-FINAL_OUTPUT = FOREACH MOVIE_RATING_SUMMARY_ORDERED_WITH_MOVIE_DETAILS GENERATE movietitle, rating_sum;
-
-=================================================================================
-
-MOVIE_RATING = GROUP RATING_DATA BY movieid;
-
-MOVIE_RATING_SUMMARY = FOREACH MOVIE_RATING generate group, SUM(RATING_DATA.rating) as rating_sum;
-
-MOVIE_RATING_SUMMARY_ORDERED = ORDER MOVIE_RATING_SUMMARY BY rating_sum DESC;
-
-MOVIE_RATING_SUMMARY_ORDERED_WITH_MOVIE_DETAILS = JOIN MOVIE_DATA BY movieid, MOVIE_RATING_SUMMARY_ORDERED BY group;
-
-FINAL_OUTPUT = FOREACH MOVIE_RATING_SUMMARY_ORDERED_WITH_MOVIE_DETAILS GENERATE movietitle, rating_sum;
+SOMETHING = FOREACH GROUPED_BY_SESSION GENERATE com.asadani.ca.pig.udf.BagIterator(FLAT_DATA) AS bar;
 
 
 
 
 
 
+{originatingIPAddress:'212.178.197.156', timestamp:'1448173259236', httpData:{httpMethod:'PUT', httpUrl:'user/register', headerParamAuthToken:'34asdwertf2weralorjvirw23kdfgnir9805d', headerParamUserId:'rob6@yetanothermail.com'}, userBrowser:'Chrome', zipcode:'20020'}
 
+hadoop-2.7.0/bin/hdfs dfs -rmr -skipTrash /home/asadani/rampup/output*
+hadoop-2.7.0/bin/hdfs dfs -rm -skipTrash /home/asadani/rampup/input/*
+hadoop-2.7.0/bin/hdfs dfs -copyFromLocal ../user-traffic.log /home/asadani/rampup/input
 
 

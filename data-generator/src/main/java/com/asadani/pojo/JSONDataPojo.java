@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.asadani.pojo.utils.SessionInfo;
@@ -171,7 +172,7 @@ public class JSONDataPojo {
 	public String toString() {
 		return "{" + "originatingIPAddress:'" + originatingIPAddress + "', "
 				+ "timestamp:'" + timestamp + "', " + "httpData:"
-				+ httpData.toString() + ", " + "zipcode:'" + zipcode + "'}";
+				+ httpData.toString() + ", " + "userBrowser:'" + userBrowser + "', " + "zipcode:'" + zipcode + "'}";
 	}
 
 }

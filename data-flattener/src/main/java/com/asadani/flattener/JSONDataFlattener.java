@@ -11,7 +11,6 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Partitioner;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.TaskInputOutputContext;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
@@ -49,6 +48,8 @@ public class JSONDataFlattener {
 				sb.append(httpData.get("headerParamUserId"));
 				sb.append(",");
 				sb.append(httpData.get("headerParamAuthToken"));
+				sb.append(",");
+				sb.append(eventData.get("userBrowser"));
 				sb.append(",");
 				sb.append(temp.get(Calendar.DATE));
 				sb.append(",");

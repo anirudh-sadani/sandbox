@@ -1,0 +1,60 @@
+hadoop-2.7.0/bin/hdfs dfs -rmr -skipTrash /home/asadani/rampup/output*
+hadoop-2.7.0/bin/hdfs dfs -rm -skipTrash /home/asadani/rampup/input/*
+hadoop-2.7.0/bin/hdfs dfs -copyFromLocal ../user-traffic.log /home/asadani/rampup/input
+
+create 'HITS_BY_DAY', 'output'
+
+===============WORKING - HITS BY DAY================
+
+FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, userBrowser:chararray,  eventDate:chararray, eventMonth:chararray, eventYear:chararray);
+
+FLAT_DATA_WITH_DATE = foreach FLAT_DATA generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, userBrowser, CONCAT(CONCAT(CONCAT((chararray)eventDate, '-'), (chararray)eventMonth, '-'), (chararray)eventYear) AS eventDateCon:chararray;
+
+GROUPED_BY_DAY = GROUP FLAT_DATA_WITH_DATE BY eventDateCon;
+
+COUNT_HITS_BY_DAY = FOREACH GROUPED_BY_DAY GENERATE group as myVar, COUNT(FLAT_DATA_WITH_DATE) as countForDay;
+
+COUNT_HITS_BY_DAY_SUMMARY = FOREACH COUNT_HITS_BY_DAY GENERATE (chararray)myVar as day, (int)countForDay as count;
+
+ILLUSTRATE COUNT_HITS_BY_DAY_SUMMARY;
+
+STORE COUNT_HITS_BY_DAY_SUMMARY INTO 'hbase://HITS_BY_DAY' USING org.apache.pig.backend.hadoop.hbase.HBaseStorage ('output:count');
+
+===============WORKING - BACK & REFRESH================
+
+REGISTER ... jar;
+
+FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, userBrowser:chararray,  eventDate:chararray, eventMonth:chararray, eventYear:chararray);
+
+GROUPED_BY_SESSION = GROUP FLAT_DATA BY userAuthToken;
+
+SOMETHING = FOREACH GROUPED_BY_SESSION GENERATE com.asadani.ca.pig.udf.BagIterator(FLAT_DATA) AS bar;
+
+==================================
+
+REGISTER ... jar;
+===============WORKING - LOCATION _ WISE================
+
+
+
+FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, userBrowser:chararray,  eventDate:chararray, eventMonth:chararray, eventYear:chararray);
+
+FLAT_DATA_WITH_DATE = foreach FLAT_DATA generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, userBrowser, CONCAT(CONCAT(CONCAT((chararray)eventDate, '-'), (chararray)eventMonth, '-'), (chararray)eventYear) AS eventDateCon:chararray;
+
+GROUPED_BY_DAY_ZIP = GROUP FLAT_DATA_WITH_DATE BY (eventDateCon, zipcode);
+
+COUNT_HITS_BY_ZIP = FOREACH GROUPED_BY_DAY_ZIP GENERATE group.eventDateCon as eventDate, group.zipcode as zip, COUNT(FLAT_DATA_WITH_DATE) as countForDay;
+
+STORE COUNT_HITS_BY_ZIP INTO '/home/asadani/rampup/output/pig_output/count_by_zip' using PigStorage(',');
+
+DAY_ZIP_PAID_FILTER = FILTER FLAT_DATA_WITH_DATE BY httpMethod == 'POST' AND httpURL matches '.*purchase.*';
+
+GROUPED_BY_DAY_ZIP_PURCHASED = GROUP DAY_ZIP_PAID_FILTER BY (eventDateCon, zipcode, httpURL);
+
+COUNT_HITS_BY_ZIP_PURCHASED = FOREACH GROUPED_BY_DAY_ZIP_PURCHASED GENERATE group.eventDateCon as eventDate, group.zipcode as zip, group.httpURL as httpURL, COUNT(DAY_ZIP_PAID_FILTER) as countForDay;
+
+STORE COUNT_HITS_BY_ZIP_PURCHASED INTO '/home/asadani/rampup/output/pig_output/count_by_zip_purchased' using PigStorage(',');
+
+==================================
+
+
