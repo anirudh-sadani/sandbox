@@ -8,7 +8,7 @@ public class SessionInfo {
 	public SessionInfo(String id, String token)
 	{
 		userId = id;
-		authToken = token;
+		authToken = token + (System.currentTimeMillis() + userId).hashCode();
 	}
 	
 	public String getUserId() {

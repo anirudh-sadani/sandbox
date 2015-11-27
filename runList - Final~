@@ -22,7 +22,7 @@ STORE COUNT_HITS_BY_DAY_SUMMARY INTO 'hbase://HITS_BY_DAY' USING org.apache.pig.
 
 ===============WORKING - BACK & REFRESH================
 
-REGISTER ... jar;
+REGISTER /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/target/ca-etl-0.0.1-SNAPSHOT.jar;
 
 FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, userBrowser:chararray,  eventDate:chararray, eventMonth:chararray, eventYear:chararray);
 
@@ -32,10 +32,10 @@ SOMETHING = FOREACH GROUPED_BY_SESSION GENERATE com.asadani.ca.pig.udf.BagIterat
 
 ==================================
 
-
+REGISTER ... jar;
 ===============WORKING - LOCATION _ WISE================
 
-REGISTER ... jar;
+
 
 FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, userBrowser:chararray,  eventDate:chararray, eventMonth:chararray, eventYear:chararray);
 
@@ -57,4 +57,73 @@ STORE COUNT_HITS_BY_ZIP_PURCHASED INTO '/home/asadani/rampup/output/pig_output/c
 
 ==================================
 
+=============== WORKING - USER SESSION ANALYSIS ================
+
+REGISTER /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/target/ca-etl-0.0.1-SNAPSHOT.jar;
+
+FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, userBrowser:chararray,  eventDate:chararray, eventMonth:chararray, eventYear:chararray);
+
+illustrate FLAT_DATA;
+
+FLAT_DATA_WITH_DATE = foreach FLAT_DATA generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, userBrowser, CONCAT(CONCAT(CONCAT((chararray)eventDate, '-'), (chararray)eventMonth, '-'), (chararray)eventYear) AS eventDateCon:chararray;
+
+FLAT_DATA_WITH_DATE_ORDERED = ORDER FLAT_DATA_WITH_DATE BY timestamp ASC;
+
+GROUPED_BY_USER_AUTH_TOKEN = GROUP FLAT_DATA_WITH_DATE_ORDERED BY (userAuthToken);
+
+SESSION_DETAILS = FOREACH GROUPED_BY_USER_AUTH_TOKEN GENERATE com.asadani.ca.pig.udf.SessionAnalyzer(FLAT_DATA_WITH_DATE_ORDERED) AS session;
+
+STORE SESSION_DETAILS INTO '/home/asadani/rampup/output/pig_output/session_activity' using PigStorage(',');
+
+==================================
+
+=============== WORKING - USER SESSION ANALYSIS ================
+
+REGISTER /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/target/ca-etl-0.0.1-SNAPSHOT.jar;
+
+FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, userBrowser:chararray,  eventDate:chararray, eventMonth:chararray, eventYear:chararray);
+
+illustrate FLAT_DATA;
+
+FLAT_DATA_WITH_DATE = foreach FLAT_DATA generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, userBrowser, CONCAT(CONCAT(CONCAT((chararray)eventDate, '-'), (chararray)eventMonth, '-'), (chararray)eventYear) AS eventDateCon:chararray;
+
+FLAT_DATA_WITH_DATE_ORDERED = ORDER FLAT_DATA_WITH_DATE BY timestamp ASC;
+
+GROUPED_BY_USER_AUTH_TOKEN = GROUP FLAT_DATA_WITH_DATE_ORDERED BY (userAuthToken);
+
+SESSION_DETAILS = FOREACH GROUPED_BY_USER_AUTH_TOKEN GENERATE com.asadani.ca.pig.udf.SessionAnalyzer(FLAT_DATA_WITH_DATE_ORDERED) AS session;
+
+STORE SESSION_DETAILS INTO '/home/asadani/rampup/output/pig_output/session_activity' using PigStorage(',');
+
+==================================
+
+=============== WORKING - USER ITEM VIEWS, SHOPPING & CART ANALYSIS ================
+
+REGISTER /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/target/ca-etl-0.0.1-SNAPSHOT.jar;
+
+FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, userBrowser:chararray,  eventDate:chararray, eventMonth:chararray, eventYear:chararray);
+
+illustrate FLAT_DATA;
+
+FLAT_DATA_WITH_DATE = foreach FLAT_DATA generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, userBrowser, CONCAT(CONCAT(CONCAT((chararray)eventDate, '-'), (chararray)eventMonth, '-'), (chararray)eventYear) AS eventDateCon:chararray;
+
+GROUPED_BY_USER_AUTH_TOKEN = GROUP FLAT_DATA_WITH_DATE BY (userAuthToken);
+
+USER_BEHAVIOR = FOREACH GROUPED_BY_USER_AUTH_TOKEN {
+SORTED_EVENTS = ORDER FLAT_DATA_WITH_DATE BY timestamp;
+CART_DETAILS = FILTER SORTED_EVENTS BY httpURL matches '.*addToCart.*';
+PURCHASED_ITEMS = FILTER SORTED_EVENTS BY httpURL matches '.*buy.*';
+WISHLIST_ITEMS = FILTER SORTED_EVENTS BY httpURL matches '.*addToWishList.*';
+GENERATE 
+SORTED_EVENTS.eventDateCon, SORTED_EVENTS.userId, group,
+COUNT(CART_DETAILS) as CART_ITEMS, 
+COUNT(WISHLIST_ITEMS) as WISHLIST, 
+COUNT(PURCHASED_ITEMS) as PURCHASED; 
+};
+
+GROUPED_BY_USERID_AUTH_TOKEN = GROUP FLAT_DATA_WITH_DATE_ORDERED BY (userId, userAuthToken);
+
+STORE SESSION_DETAILS INTO '/home/asadani/rampup/output/pig_output/session_activity' using PigStorage(',');
+
+==================================
 
