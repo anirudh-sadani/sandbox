@@ -125,15 +125,6 @@ GRANT SELECT,INSERT,UPDATE,DELETE,LOCK TABLES,EXECUTE ON metastore.* TO 'hive'@'
 
 
 
-
-
-
-
-
-
-
-
-
 $ sudo chkconfig mysql on
 
 REGISTER ... jar;

@@ -10,8 +10,8 @@ GET,data/product?searchString=[searchString]
 PUT,data/product/[productId]?action=[action]
 POST,data/cart/purchase/products=[productIds]
 GET,view/home
-GET,view/category
-GET,view/product
+GET,view/category/[categoryId]
+GET,view/product/[productId]
 GET,view/register
-GET,view/cart
-GET,view/payment
+GET,view/cart/[userId]
+GET,view/payment/[userId]

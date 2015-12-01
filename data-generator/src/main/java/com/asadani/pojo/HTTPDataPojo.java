@@ -80,6 +80,8 @@ public class HTTPDataPojo {
 			url = url.replace("[searchString]", searchStrings[ThreadLocalRandom.current().nextInt(0, searchStrings.length-1)]);
 		if(url.contains("[action]"))
 			url = url.replace("[action]", productActions[ThreadLocalRandom.current().nextInt(0, productActions.length-1)]);
+		if(url.contains("[userId]"))
+			url = url.replace("[userId]", this.headerParamUserId);
 		return url;
 	}
 

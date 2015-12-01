@@ -1,3 +1,6 @@
+Reshma Pandey 9009010090
+
+
 hadoop-2.7.0/bin/hdfs dfs -rmr -skipTrash /home/asadani/rampup/output*
 hadoop-2.7.0/bin/hdfs dfs -rm -skipTrash /home/asadani/rampup/input/*
 hadoop-2.7.0/bin/hdfs dfs -copyFromLocal ../user-traffic.log /home/asadani/rampup/input

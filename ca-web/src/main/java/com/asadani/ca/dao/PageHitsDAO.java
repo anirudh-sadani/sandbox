@@ -1,10 +1,8 @@
 package com.asadani.ca.dao;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.asadani.ca.hbase.HBaseConnectionManager;
-import com.asadani.ca.hbase.HBaseConstants;
 import com.asadani.ca.hbase.HBaseQueryExecutor;
 
 public class PageHitsDAO extends AbstractDAO {
