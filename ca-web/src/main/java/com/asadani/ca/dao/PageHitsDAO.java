@@ -1,5 +1,7 @@
 package com.asadani.ca.dao;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.asadani.ca.hbase.HBaseConnectionManager;
@@ -13,10 +15,22 @@ public class PageHitsDAO extends AbstractDAO {
 		this.setHbaseTable("pig_table");
 	}
 
-	public Map getMostVisitedPagesByDay()
+	public List<Map<byte[], byte[]>> getMostVisitedPagesByDay()
 	{
+		List<Map<byte[], byte[]>> tempMap = new ArrayList<Map<byte[], byte[]>> (); 
 		
-		return this.getExecutor().fetchData(this.getHbaseTable());
+		tempMap=  this.getExecutor().fetchData(this.getHbaseTable(), "cf", "24-11-2015", "26-11-2015");
+		
+		return tempMap;
+	}
+	
+	public List<Map<byte[], byte[]>> getHitsByDay()
+	{
+		List<Map<byte[], byte[]>> tempMap = new ArrayList<Map<byte[], byte[]>> (); 
+		
+		tempMap=  this.getExecutor().fetchData("HITS_BY_DAY", "output", "22-11-2015", "26-11-2015");
+		
+		return tempMap;
 	}
 	
 	public static void main (String args[])

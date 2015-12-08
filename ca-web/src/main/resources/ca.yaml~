@@ -1,4 +1,4 @@
 server:
   type: simple
-  rootPath: '/api/*'
+  rootPath: '/ca/*'
   applicationContextPath: /

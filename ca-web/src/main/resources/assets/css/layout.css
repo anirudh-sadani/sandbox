@@ -1,0 +1,30 @@
+#header {
+    background-color:white;
+    color:white;
+    text-align:center;
+    padding:5px;
+height:4%;
+}
+#filter {
+    line-height:30px;
+    background-color:#eeeeee;
+    height:1000px;
+    width:15%;
+    float:left;
+    padding:5px;
+ 
+}
+#section {
+    width:85%;
+ height:1000px;
+    float:left;
+    padding:10px; 
+}
+#footer {
+    background-color:black;
+    color:white;
+    clear:both;
+    text-align:center;
+    padding:5px; 
+	height:3%;
+}

@@ -2,3 +2,6 @@ server:
   type: simple
   rootPath: '/ca/*'
   applicationContextPath: /
+  connector:
+    type: http
+    port: 4040

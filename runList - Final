@@ -146,3 +146,7 @@ GROUPED_BY_DAY_PAGE = GROUP FLAT_DATA_WITH_DATE BY (httpURL,eventDateCon);
 COUNT_HITS_PER_PAGE_BY_DAY = FOREACH GROUPED_BY_DAY_PAGE GENERATE group.httpURL as httpURL, group.eventDateCon as eventDateCon, COUNT(FLAT_DATA_WITH_DATE) as countForDay;
 
 
+
+
+java -jar /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-web/target/ca-web-0.0.1-SNAPSHOT.jar server /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-web/src/main/resources/ca.yaml
+

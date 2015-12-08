@@ -141,8 +141,8 @@ FLAT_DATA_FILTERED = FILTER FLAT_DATA BY (httpURL matches '.*view.*');
 
 FLAT_DATA_WITH_DATE = foreach FLAT_DATA_FILTERED generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, userBrowser, CONCAT(CONCAT(CONCAT((chararray)eventDate, '-'), (chararray)eventMonth, '-'), (chararray)eventYear) AS eventDateCon:chararray;
 
-GROUPED_BY_DAY_PAGE = GROUP FLAT_DATA_WITH_DAY BY (httpURL);
+GROUPED_BY_DAY_PAGE = GROUP FLAT_DATA_WITH_DATE BY (httpURL,eventDateCon);
 
-COUNT_HITS_PER_PAGE_BY_DAY = FOREACH GROUPED_BY_DAY_PAGE GENERATE group as groupKey, COUNT(FLAT_DATA_WITH_DAY) as countForDay, eventDateCon;
+COUNT_HITS_PER_PAGE_BY_DAY = FOREACH GROUPED_BY_DAY_PAGE GENERATE group.httpURL as httpURL, group.eventDateCon as eventDateCon, COUNT(FLAT_DATA_WITH_DATE) as countForDay;
 
 
