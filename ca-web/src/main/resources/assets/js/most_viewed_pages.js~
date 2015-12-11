@@ -1,32 +1,42 @@
 d3.json(
-"/ca/data/hits_by_day", 
+"/ca/data/most_visited_pages_by_users", 
 function(error, json){
 	if (error) return console.warn(error);
 
+json = [{"view/category":"103","rowkey":"22-11-2015","view/payment":"103","view/home":"101","view/register":"106","view/cart":"11"},{"view/category":"560","rowkey":"23-11-2015","view/payment":"557","view/home":"570","view/product":"554","view/cart":"570"},{"view/category":"520","rowkey":"24-11-2015","view/home":"553","view/product":"562","view/register":"541","view/cart":"518"},{"view/category":"480","rowkey":"25-11-2015","view/payment":"468","view/product":"433","view/register":"463","view/cart":"422"}];
+
 	var result = [];
 	for(var i=0; i<json.length; i++){
-		result.push(new row(json[i].rowkey, json[i].count, "Hits Count"));
-	}
+					for (var propName in json[i]) {
+						if(propName != 'rowkey'){
+							result.push(new row(json[i].rowkey, json[i][propName], propName));
+						}
+					}
+				}
+console.log(json);
+
 var expensesByName = d3.nest()
 .key(function(d) { return d.key; })
 .entries(result);
-
+console.log(expensesByName);
 	drawMostVisited(expensesByName);
 }
 );
 
 function row(rowkey, count, key){
 	this.x = rowkey;
-	this.y = count+0;
+	this.y = count;
 	this.key = key;
 }
 
 
 function drawMostVisited(result1){
 	nv.addGraph(function() {
-		var chart = nv.models.discreteBarChart();
+		var chart = nv.models.multiBarChart();
 		chart.yAxis
 		.tickFormat(d3.format(',.1f'));
+
+//chart.yRange([0,0,0,10,2000]);
 
 		d3.select('#mostvisited svg')
 		.datum(result1)

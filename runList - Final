@@ -97,55 +97,8 @@ STORE SESSION_DETAILS INTO '/home/asadani/rampup/output/pig_output/session_activ
 
 ==================================
 
-=============== WORKING - USER ITEM VIEWS, SHOPPING & CART ANALYSIS ================
 
-REGISTER /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/target/ca-etl-0.0.1-SNAPSHOT.jar;
-
-FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, userBrowser:chararray,  eventDate:chararray, eventMonth:chararray, eventYear:chararray);
-
-illustrate FLAT_DATA;
-
-FLAT_DATA_WITH_DATE = foreach FLAT_DATA generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, userBrowser, CONCAT(CONCAT(CONCAT((chararray)eventDate, '-'), (chararray)eventMonth, '-'), (chararray)eventYear) AS eventDateCon:chararray;
-
-GROUPED_BY_USER_AUTH_TOKEN = GROUP FLAT_DATA_WITH_DATE BY (userAuthToken, userId, eventDateCon);
-
-USER_BEHAVIOR = FOREACH GROUPED_BY_USER_AUTH_TOKEN {
-SORTED_EVENTS = ORDER FLAT_DATA_WITH_DATE BY timestamp;
-CART_DETAILS = FILTER SORTED_EVENTS BY httpURL matches '.*addToCart.*';
-PURCHASED_ITEMS = FILTER SORTED_EVENTS BY httpURL matches '.*buy.*';
-WISHLIST_ITEMS = FILTER SORTED_EVENTS BY httpURL matches '.*addToWishList.*';
-GENERATE 
-group.eventDateCon, group.userId, group.userAuthToken,
-COUNT(CART_DETAILS) as CART_ITEMS, 
-COUNT(WISHLIST_ITEMS) as WISHLIST, 
-COUNT(PURCHASED_ITEMS) as PURCHASED; 
-};
-
-STORE USER_BEHAVIOR INTO '/home/asadani/rampup/output/pig_output/user_activity' using PigStorage(',');
-
-==================================
-
-
-
-Most visited pages by users
-
-create 'MOST_VISITED_PAGES_BY_USERS', 'count'
-
-
-
-FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, userBrowser:chararray,  eventDate:chararray, eventMonth:chararray, eventYear:chararray);
-
-
-FLAT_DATA_FILTERED = FILTER FLAT_DATA BY (httpURL matches '.*view.*');
-
-
-FLAT_DATA_WITH_DATE = foreach FLAT_DATA_FILTERED generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, userBrowser, CONCAT(CONCAT(CONCAT((chararray)eventDate, '-'), (chararray)eventMonth, '-'), (chararray)eventYear) AS eventDateCon:chararray;
-
-GROUPED_BY_DAY_PAGE = GROUP FLAT_DATA_WITH_DATE BY (httpURL,eventDateCon);
-
-COUNT_HITS_PER_PAGE_BY_DAY = FOREACH GROUPED_BY_DAY_PAGE GENERATE group.httpURL as httpURL, group.eventDateCon as eventDateCon, COUNT(FLAT_DATA_WITH_DATE) as countForDay;
-
-
+hadoop-2.7.0/bin/hadoop jar /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/target/ca-etl-0.0.1-SNAPSHOT.jar com.asadani.ca.dataload.MostVisitedPagesUploader
 
 
 java -jar /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-web/target/ca-web-0.0.1-SNAPSHOT.jar server /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-web/src/main/resources/ca.yaml

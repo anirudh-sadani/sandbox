@@ -1,0 +1,4 @@
+create 'MOST_VISITED_PAGES', 'outputCF'
+
+create 'USER_BEHAVIOR', 'Output'
+

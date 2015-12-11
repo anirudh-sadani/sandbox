@@ -61,7 +61,7 @@ public class Application implements Callable<List<String>> {
 		
 		Calendar cal = Calendar.getInstance();
 		
-		cal.set(2015, 10, 22);
+		cal.set(2015, 9, 22);
 		
 		long days = (Calendar.getInstance().getTimeInMillis() - cal.getTimeInMillis())/(1000*60*60*24);
 		
@@ -87,7 +87,7 @@ public class Application implements Callable<List<String>> {
 			}
 			System.out.println("Done for : " + cal.getTime());
 			
-			cal.set(2015, 10, 22);
+			cal.set(2015, 9, 22);
 			
 			cal.add(Calendar.DATE, j);
 		}

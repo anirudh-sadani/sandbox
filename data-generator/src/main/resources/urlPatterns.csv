@@ -13,5 +13,8 @@ GET,view/home
 GET,view/category/[categoryId]
 GET,view/product/[productId]
 GET,view/register
-GET,view/cart/[userId]
-GET,view/payment/[userId]
+GET,view/cart
+GET,view/payment
+GET,view/reviews
+GET,view/recommendations
+GET,view/feedback

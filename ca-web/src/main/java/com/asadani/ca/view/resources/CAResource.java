@@ -39,38 +39,35 @@ public class CAResource {
 	
 	@GET
     @Path("most_visited_pages_by_users")
-    public Map<String, Long> most_visited_pages(){
+    public List<Map<String, String>>  most_visited_pages(){
     	
-		List<Map<byte[], byte[]>> result = pageHitsDao.getMostVisitedPagesByDay();
+List<Map<byte[], byte[]>> result = pageHitsDao.getMostVisitedPagesByDay();
 		
 		java.util.Iterator<Map<byte[], byte[]>> iter = result.iterator();
 		
 		NavigableMap<byte[], byte[]> tempObject;
 		
-		java.util.Iterator<byte[]> iter2;
+		List<Map<String, String>> finalResult = new ArrayList<Map<String, String>> ();
 		
 		while (iter.hasNext())
 		{
 			tempObject = (NavigableMap<byte[], byte[]>) iter.next();
 			System.out.println(tempObject);
-			
-			Set<byte[]> ks  = tempObject.keySet();
-			
-			iter2 = ks.iterator();
-			while (iter2.hasNext())
-			{
-				byte [] key = iter2.next();
-				System.out.println();
-				System.out.println(Bytes.toString(key));
-				
-				System.out.println(Bytes.toString(tempObject.get(key)));
+			Map<String, String> resultMap = new HashMap<String, String> (); 
+						
+			for(Entry<byte[], byte[]> entry : tempObject.entrySet()){
+				resultMap.put(Bytes.toString(entry.getKey()), Bytes.toString(entry.getValue()) );
 			}
+			finalResult.add(resultMap);
+			
+			System.out.println(finalResult);
+			
 			
 		}
 		
 		//NavigableMap<byte[], byte[]>
 		
-		return new HashMap<String, Long> ();
+		return finalResult;
     }
 	
 	@GET
@@ -82,9 +79,6 @@ public class CAResource {
 		java.util.Iterator<Map<byte[], byte[]>> iter = result.iterator();
 		
 		NavigableMap<byte[], byte[]> tempObject;
-		
-		java.util.Iterator<byte[]> iter2;
-		
 		
 		List<Map<String, String>> finalResult = new ArrayList<Map<String, String>> ();
 		
