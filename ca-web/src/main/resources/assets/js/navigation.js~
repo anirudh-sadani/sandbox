@@ -11,18 +11,18 @@ alert(currentDrawn);
 
 }
 
-function showUserSession(){
+function navigateCarousel(slideNum){
 
-$("second").hide();
 
-$("first").show();
+    $("#myCarousel").carousel(slideNum);
+
 
 }
 
 function showECommerce(){
-$("first").hide();
+$("#first").hide();
 
-$("second").show();
+$("#second").show();
 
 
 

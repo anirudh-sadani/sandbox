@@ -2,7 +2,7 @@
     nv.addGraph(function() {
         chart = nv.models.sunburstChart();
         chart.color(d3.scale.category20c());
-        d3.select("#sessionanalysis svg")
+        d3.select("#trendanalysis svg")
                 .datum(getData())
                 .call(chart);
         nv.utils.windowResize(chart.update);
