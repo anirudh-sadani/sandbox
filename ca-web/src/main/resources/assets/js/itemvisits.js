@@ -1,5 +1,5 @@
 d3.json(
-"/ca/data/item_visits?startDate=15-11-2015&endDate=20-11-2015", 
+"/ca/data/item_visits?startDate=10-11-2015&endDate=30-11-2015", 
 function(error, json){
 	if (error) return console.warn(error);
 
@@ -50,22 +50,22 @@ var updated_wishlist = d3.nest()
   }).entries(wishlist);
 
 updated_cart.forEach(function(d) {
- d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  + d.key.substring(6));
+ d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  d.key.substring(6));
  d.y = d.values;
 });
 
 updated_viewed.forEach(function(d) {
- d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  + d.key.substring(6));
+ d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  d.key.substring(6));
  d.y = d.values;
 });
 
 updated_purchased.forEach(function(d) {
- d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  + d.key.substring(6));
+ d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  d.key.substring(6));
  d.y = d.values;
 });
 
 updated_wishlist.forEach(function(d) {
- d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  + d.key.substring(6));
+ d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  d.key.substring(6));
  d.y = d.values;
 });
 
@@ -79,26 +79,24 @@ color: '#ff7f0e'  //color - optional: choose your own line color.
 {
 values: updated_cart,
 key: 'CART ITEMS',
-color: '#7777ff'//area - set to true if you want this line to turn into a filled area chart.
+color: '#115488'//area - set to true if you want this line to turn into a filled area chart.
 },
 {
 values: updated_viewed,
 key: 'VIEWED ITEMS',
-color: '#7777ff'//area - set to true if you want this line to turn into a filled area chart.
+color: '#1177ff'//area - set to true if you want this line to turn into a filled area chart.
 },
 {
 values: updated_wishlist,
 key: 'WISHLIST ITEMS',
-color: '#7777ff'  //area - set to true if you want this line to turn into a filled area chart.
+color: '#7700ff'  //area - set to true if you want this line to turn into a filled area chart.
 }]);
 }
 );
 
 function itemVisitRow(rowkey, count)
 {
-	
 	this.x = rowkey;
-	
 	this.y = +count;
 }
 

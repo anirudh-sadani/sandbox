@@ -28,7 +28,7 @@ public class PageHitsDAO extends AbstractDAO {
 	{
 		List<Map<byte[], byte[]>> tempMap = new ArrayList<Map<byte[], byte[]>> (); 
 		
-		tempMap=  this.getExecutor().fetchData("HITS_BY_DAY", "output", startDate, endDate);
+		tempMap=  this.getExecutor().fetchDataWithFilter("HITS_BY_DAY", "output", startDate, endDate);
 		
 		return tempMap;
 	}

@@ -24,7 +24,9 @@
 <script src="./js/most_viewed_pages.js"></script>
 <script src="./js/calendar.js"></script>
 <script src="./js/itemvisits.js"></script>
+<script src="./js/conversion.js"></script>
 <script src="./js/cart_analysis.js"></script>
+<script src="./js/hits_by_day.js"></script>
 
 <script src="./js/navigation.js"></script>
 <script type="text/javascript"
@@ -46,9 +48,10 @@
 						data-toggle="dropdown" href="#">Traffic Analysis <span
 							class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#" onClick="navigateCarousel(0);">Most
+							<li><a href="#" onClick="navigateCarousel(0);">Hits By Day</a></li>
+							<li><a href="#" onClick="navigateCarousel(1);">Most
 									Visited Pages</a></li>
-							<li><a href="#" onClick="navigateCarousel(1);">Geo
+							<li><a href="#" onClick="navigateCarousel(2);">Geo
 									Analysis</a></li>
 						</ul></li>
 
@@ -56,13 +59,13 @@
 						data-toggle="dropdown" href="#">E-Commerce Analysis <span
 							class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#" onClick="navigateCarousel(2);">Item
+							<li><a href="#" onClick="navigateCarousel(3);">Item
 									Visits</a></li>
-							<li><a href="#" onClick="navigateCarousel(3);">Shopping
+							<li><a href="#" onClick="navigateCarousel(4);">Shopping
 									Cart</a></li>
-							<li><a href="#" onClick="navigateCarousel(4);">Spending
+							<li><a href="#" onClick="navigateCarousel(5);">Spending
 									Trends</a></li>
-							<li><a href="#" onClick="navigateCarousel(5);">Conversion
+							<li><a href="#" onClick="navigateCarousel(6);">Conversion
 									Ratio</a></li>
 						</ul></li>
 
@@ -70,9 +73,9 @@
 						data-toggle="dropdown" href="#">User Session Analysis <span
 							class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#" onClick="navigateCarousel(6);">Session
+							<li><a href="#" onClick="navigateCarousel(7);">Session
 									Activity</a></li>
-							<li><a href="#" onClick="navigateCarousel(7);">Back &
+							<li><a href="#" onClick="navigateCarousel(8);">Back &
 									Refresh</a></li>
 						</ul></li>
 				</ul>
@@ -114,12 +117,17 @@
 				<li data-target="#myCarousel" data-slide-to="5"></li>
 				<li data-target="#myCarousel" data-slide-to="6"></li>
 				<li data-target="#myCarousel" data-slide-to="7"></li>
+				<li data-target="#myCarousel" data-slide-to="8"></li>
 			</ol>
 
 			<!-- Wrapper for slides -->
 			<div class="carousel-inner" role="listbox">
 
-				<div class="item active" id="mostvisited" style="height: 500px">
+				<div class="item active" id="hitsbyday" style="height: 500px">
+					<h3>Hits by day</h3>
+					<svg></svg>
+				</div>
+				<div class="item" id="mostvisited" style="height: 500px">
 					<h3>Most Visited Pages By Users</h3>
 					<svg></svg>
 				</div>
@@ -147,7 +155,7 @@
 				</div>
 				<div class="item" id="conversionanalysis"
 					style="height: 500px width: 500px">
-					<h3>Conversion Analysis</h3>
+					<h3>Items visit vs purchase ratio</h3>
 					<svg></svg>
 				</div>
 				<div class="item" id="sessionanalysis"
