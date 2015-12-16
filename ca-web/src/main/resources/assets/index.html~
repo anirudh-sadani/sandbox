@@ -142,7 +142,7 @@
 				<div class="item" id="trendanalysis"
 					style="height: 500px width: 500px">
 					<h3>Shopping Trends Analysis</h3>
-					<svg></svg>
+					<svg style="height: inherit"></svg>
 				</div>
 				<div class="item" id="conversionanalysis"
 					style="height: 500px width: 500px">

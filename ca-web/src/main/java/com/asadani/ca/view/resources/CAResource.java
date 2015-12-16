@@ -11,12 +11,14 @@ import java.util.Set;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.hadoop.hbase.shaded.org.apache.commons.math3.util.MultidimensionalCounter.Iterator;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import com.asadani.ca.dao.PageHitsDAO;
+import com.asadani.ca.dao.SessionAnalysisDAO;
 import com.asadani.ca.hbase.HBaseConnectionManager;
 import com.asadani.ca.hbase.HBaseQueryExecutor;
 
@@ -30,29 +32,30 @@ public class CAResource {
 	
 	private PageHitsDAO pageHitsDao;
 	
+	private SessionAnalysisDAO sessionAnalysisDao;
 	
 	public CAResource(){
 		HBaseConnectionManager manager = new HBaseConnectionManager();
 		HBaseQueryExecutor executor = new HBaseQueryExecutor(manager);
 		this.pageHitsDao = new PageHitsDAO(executor);
+		this.sessionAnalysisDao = new SessionAnalysisDAO(executor);
 	}
 	
 	@GET
     @Path("most_visited_pages_by_users")
-    public List<Map<String, String>>  most_visited_pages(){
+    public List<Map<String, String>>  most_visited_pages(@QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate){
     	
-List<Map<byte[], byte[]>> result = pageHitsDao.getMostVisitedPagesByDay();
+List<Map<byte[], byte[]>> result = pageHitsDao.getMostVisitedPagesByDay(startDate, endDate);
 		
 		java.util.Iterator<Map<byte[], byte[]>> iter = result.iterator();
 		
 		NavigableMap<byte[], byte[]> tempObject;
-		
+
 		List<Map<String, String>> finalResult = new ArrayList<Map<String, String>> ();
 		
 		while (iter.hasNext())
 		{
 			tempObject = (NavigableMap<byte[], byte[]>) iter.next();
-			System.out.println(tempObject);
 			Map<String, String> resultMap = new HashMap<String, String> (); 
 						
 			for(Entry<byte[], byte[]> entry : tempObject.entrySet()){
@@ -72,9 +75,9 @@ List<Map<byte[], byte[]>> result = pageHitsDao.getMostVisitedPagesByDay();
 	
 	@GET
     @Path("hits_by_day")
-    public List<Map<String, String>> hits_by_day(){
+    public List<Map<String, String>> hitsByDay(@QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate){
     	
-		List<Map<byte[], byte[]>> result = pageHitsDao.getHitsByDay();
+		List<Map<byte[], byte[]>> result = pageHitsDao.getHitsByDay(startDate, endDate);
 		
 		java.util.Iterator<Map<byte[], byte[]>> iter = result.iterator();
 		
@@ -85,7 +88,6 @@ List<Map<byte[], byte[]>> result = pageHitsDao.getMostVisitedPagesByDay();
 		while (iter.hasNext())
 		{
 			tempObject = (NavigableMap<byte[], byte[]>) iter.next();
-			System.out.println(tempObject);
 			Map<String, String> resultMap = new HashMap<String, String> (); 
 						
 			for(Entry<byte[], byte[]> entry : tempObject.entrySet()){
@@ -102,5 +104,68 @@ List<Map<byte[], byte[]>> result = pageHitsDao.getMostVisitedPagesByDay();
 		
 		return finalResult;
     }
+	
+	@GET
+    @Path("session_details")
+public List<Map<String, String>> sessionDetails(@QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate){
+    	
+		List<Map<byte[], byte[]>> result = sessionAnalysisDao.getUserSessionAnalysisData(startDate, endDate);
+		
+		java.util.Iterator<Map<byte[], byte[]>> iter = result.iterator();
+		
+		NavigableMap<byte[], byte[]> tempObject;
+		
+		List<Map<String, String>> finalResult = new ArrayList<Map<String, String>> ();
+		
+		while (iter.hasNext())
+		{
+			tempObject = (NavigableMap<byte[], byte[]>) iter.next();
+			Map<String, String> resultMap = new HashMap<String, String> (); 
+						
+			for(Entry<byte[], byte[]> entry : tempObject.entrySet()){
+				resultMap.put(Bytes.toString(entry.getKey()), Bytes.toString(entry.getValue()) );
+			}
+			finalResult.add(resultMap);
+		}
+		
+		//NavigableMap<byte[], byte[]>
+		System.out.println(finalResult);
+		return finalResult;
+    }
+	
+	@GET
+    @Path("item_visits")
+public List<Map<String, String>> itemVisits(@QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate){
+    	
+		List<Map<byte[], byte[]>> result = sessionAnalysisDao.getProductVisitsData(startDate, endDate);
+		
+		java.util.Iterator<Map<byte[], byte[]>> iter = result.iterator();
+		
+		NavigableMap<byte[], byte[]> tempObject;
+		
+		List<Map<String, String>> finalResult = new ArrayList<Map<String, String>> ();
+		
+		while (iter.hasNext())
+		{
+			tempObject = (NavigableMap<byte[], byte[]>) iter.next();
+			Map<String, String> resultMap = new HashMap<String, String> (); 
+						
+			for(Entry<byte[], byte[]> entry : tempObject.entrySet()){
+				resultMap.put(Bytes.toString(entry.getKey()), Bytes.toString(entry.getValue()) );
+			}
+			finalResult.add(resultMap);
+		}
+		
+		//NavigableMap<byte[], byte[]>
+		System.out.println(finalResult);
+		return finalResult;
+    }
+	
+public static void main (String args[])
+{
+	CAResource ca = new CAResource();
+	
+	ca.most_visited_pages("1-12-2015", "10-12-2015");
+}
 	
 }

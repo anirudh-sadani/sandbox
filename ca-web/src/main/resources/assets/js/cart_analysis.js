@@ -3,8 +3,13 @@
         chart = nv.models.sunburstChart();
         chart.color(d3.scale.category20c());
         d3.select("#trendanalysis svg")
+.style("width", 800)                                               
+.style("height", 300)
                 .datum(getData())
+
                 .call(chart);
+
+
         nv.utils.windowResize(chart.update);
         return chart;
     });

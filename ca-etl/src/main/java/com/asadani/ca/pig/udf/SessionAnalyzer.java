@@ -48,14 +48,11 @@ public class SessionAnalyzer extends EvalFunc<Tuple> {
 		System.out.println(currentTuple.size());
 		
 		
-		tupleToReturn.set(0, currentTuple.get(6));
-		tupleToReturn.set(1, currentTuple.get(8));
-		tupleToReturn.set(2, currentTuple.get(5));
-		tupleToReturn.set(3, currentTuple.get(2));
+		tupleToReturn.set(0, currentTuple.get(8).toString() + "_" + currentTuple.get(5).toString()  + "_" +  currentTuple.get(6).toString());
 		
-		tupleToReturn.set(4, refresh);
-		tupleToReturn.set(5, back);
-		tupleToReturn.set(6, (sessionEnd-sessionStart));
+		tupleToReturn.set(1, refresh);
+		tupleToReturn.set(2, back);
+		tupleToReturn.set(3, (sessionEnd-sessionStart));
 
 		return tupleToReturn;
 	}
@@ -63,10 +60,7 @@ public class SessionAnalyzer extends EvalFunc<Tuple> {
 	 public Schema outputSchema(Schema input) {
 	        try{
 	            Schema tupleSchema = new Schema();
-	            tupleSchema.add(new Schema.FieldSchema("sessionId", DataType.CHARARRAY));
-	            tupleSchema.add(new Schema.FieldSchema("eventDateCon", DataType.CHARARRAY));
-	            tupleSchema.add(new Schema.FieldSchema("userId", DataType.CHARARRAY));
-	            tupleSchema.add(new Schema.FieldSchema("zipcode", DataType.CHARARRAY));
+	            tupleSchema.add(new Schema.FieldSchema("rowkeyForOp", DataType.CHARARRAY));
 	            tupleSchema.add(new Schema.FieldSchema("refreshEventCount", DataType.INTEGER));
 	            tupleSchema.add(new Schema.FieldSchema("backEventCount", DataType.INTEGER));
 	            tupleSchema.add(new Schema.FieldSchema("sessionDuration", DataType.LONG));

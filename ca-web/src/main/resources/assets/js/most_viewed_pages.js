@@ -1,5 +1,5 @@
 d3.json(
-"/ca/data/most_visited_pages_by_users", 
+"/ca/data/most_visited_pages_by_users?startDate=1-11-2015&endDate=10-12-2015", 
 function(error, json){
 	if (error) return console.warn(error);
 

@@ -15,20 +15,20 @@ public class PageHitsDAO extends AbstractDAO {
 		this.setHbaseTable("MOST_VISITED_PAGES");
 	}
 
-	public List<Map<byte[], byte[]>> getMostVisitedPagesByDay()
+	public List<Map<byte[], byte[]>> getMostVisitedPagesByDay(String startDate, String endDate)
 	{
 		List<Map<byte[], byte[]>> tempMap = new ArrayList<Map<byte[], byte[]>> (); 
 		
-		tempMap=  this.getExecutor().fetchData(this.getHbaseTable(), "outputCF", "12-11-2015", "26-11-2015");
+		tempMap=  this.getExecutor().fetchDataWithFilter(this.getHbaseTable(), "outputCF", startDate, endDate);
 		
 		return tempMap;
 	}
 	
-	public List<Map<byte[], byte[]>> getHitsByDay()
+	public List<Map<byte[], byte[]>> getHitsByDay(String startDate, String endDate)
 	{
 		List<Map<byte[], byte[]>> tempMap = new ArrayList<Map<byte[], byte[]>> (); 
 		
-		tempMap=  this.getExecutor().fetchData("HITS_BY_DAY", "output", "12-11-2015", "26-11-2015");
+		tempMap=  this.getExecutor().fetchData("HITS_BY_DAY", "output", startDate, endDate);
 		
 		return tempMap;
 	}
@@ -39,6 +39,6 @@ public class PageHitsDAO extends AbstractDAO {
 		HBaseQueryExecutor executor1 = new HBaseQueryExecutor(manager);
 		PageHitsDAO pdo = new PageHitsDAO(executor1);
 		
-		pdo.getMostVisitedPagesByDay();
+		//pdo.getMostVisitedPagesByDay();
 	}
 }
