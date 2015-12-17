@@ -22,7 +22,8 @@ console.log(expensesByName);
 );
 
 function row(rowkey, count, key){
-	this.x = rowkey;
+
+	this.x = getDateObjectForAttribute(rowkey);
 	this.y = count;
 	this.key = key;
 }
@@ -34,9 +35,17 @@ function drawMostVisited(result1){
 		chart.yAxis
 		.tickFormat(d3.format(',.1f'));
 
+chart.xAxis
+       .axisLabel('Date')
+       .rotateLabels(-45)
+       .tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); });
+
+//chart.xScale(d3.time.scale());
 //chart.yRange([0,0,0,10,2000]);
 
 		d3.select('#mostvisited svg')
+		.style("width", 800)                                               
+		.style("height", 375)
 		.datum(result1)
 		.transition().duration(500)
 		.call(chart);

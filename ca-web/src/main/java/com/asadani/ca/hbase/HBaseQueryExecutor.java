@@ -214,9 +214,9 @@ public class HBaseQueryExecutor {
 	    
 	    for(long i = 1; i <= numberOfDays; i++)
 	    {
-	    	String dateFilterString = 	startCalendar.get(Calendar.DAY_OF_MONTH) + "-" +
+	    	String dateFilterString = 	startCalendar.get(Calendar.YEAR) + "-" +
 	    								(startCalendar.get(Calendar.MONTH) + 1) + "-" +
-	    								startCalendar.get(Calendar.YEAR);
+	    								startCalendar.get(Calendar.DAY_OF_MONTH);
 	    	
 	    	filterList.addFilter( new PrefixFilter(dateFilterString.getBytes()));
 	    	

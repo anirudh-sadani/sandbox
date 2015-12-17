@@ -10,7 +10,6 @@ GROUPED_BY_USER_AUTH_TOKEN = GROUP FLAT_DATA_WITH_DATE_ORDERED BY (userAuthToken
 
 SESSION_DETAILS = FOREACH GROUPED_BY_USER_AUTH_TOKEN GENERATE com.asadani.ca.pig.udf.SessionAnalyzer(FLAT_DATA_WITH_DATE_ORDERED) AS session;
 
+FLAT_SESSION_DETAILS = FOREACH SESSION_DETAILS GENERATE session.rowkeyForOp as rowKey, session.refreshEventCount as refreshCnt, session.backEventCount as backCnt, session.sessionDuration as duration;
 
-FOR_HBASE_STORAGE = FOREACH SESSION_DETAILS GENERATE session.rowkeyForOp as rowKey, session.refreshEventCount as refreshCnt, session.backEventCount as backCnt, session.sessionDuration as duration;
-
-STORE FOR_HBASE_STORAGE INTO 'hbase://USER_SESSION_DETAILS' USING org.apache.pig.backend.hadoop.hbase.HBaseStorage ('Output_Session_Analysis:refreshCnt, Output_Session_Analysis:backCnt, Output_Session_Analysis:duration');
+STORE FLAT_SESSION_DETAILS INTO 'hbase://USER_SESSION_DETAILS' USING org.apache.pig.backend.hadoop.hbase.HBaseStorage ('Output_Session_Analysis:refreshCnt, Output_Session_Analysis:backCnt, Output_Session_Analysis:duration');

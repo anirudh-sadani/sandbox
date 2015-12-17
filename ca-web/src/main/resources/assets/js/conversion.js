@@ -25,7 +25,7 @@ var updated_purchased = d3.nest()
 
 
 updated_purchased.forEach(function(d) {
- d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  + d.key.substring(6));
+ d.x = getDateObjectForAttribute(d.key);
  d.y = d.values;
 });
 

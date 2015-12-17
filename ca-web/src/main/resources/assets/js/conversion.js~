@@ -33,7 +33,7 @@ updated_purchased.forEach(function(d) {
 drawConversion(
 [{
 values: updated_purchased,      //values - represents the array of {x,y} data points
-key: 'Items visit vs purchase ratio', //key  - the name of the series.
+key: 'Conversion Ratio', //key  - the name of the series.
 color: '#ff7f0e'  //color - optional: choose your own line color.
 }]);
 }

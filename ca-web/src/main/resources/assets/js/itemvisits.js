@@ -50,22 +50,22 @@ var updated_wishlist = d3.nest()
   }).entries(wishlist);
 
 updated_cart.forEach(function(d) {
- d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  d.key.substring(6));
+ d.x = getDateObjectForAttribute(d.key);
  d.y = d.values;
 });
 
 updated_viewed.forEach(function(d) {
- d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  d.key.substring(6));
+ d.x = getDateObjectForAttribute(d.key);
  d.y = d.values;
 });
 
 updated_purchased.forEach(function(d) {
- d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  d.key.substring(6));
+ d.x = getDateObjectForAttribute(d.key);
  d.y = d.values;
 });
 
 updated_wishlist.forEach(function(d) {
- d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  d.key.substring(6));
+ d.x = getDateObjectForAttribute(d.key);
  d.y = d.values;
 });
 
@@ -108,7 +108,8 @@ function drawItemVisits(result1){
 		var chart = nv.models.lineChart()
                 .margin({left: 100})  //Adjust chart margins to give the x-axis some breathing room.
                 .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
-               
+
+
                 .showLegend(true)       //Show the legend, allowing users to turn on/off line series.
                 .showYAxis(true)        //Show the y-axis
                 .showXAxis(true)        //Show the x-axis

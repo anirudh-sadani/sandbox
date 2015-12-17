@@ -1,5 +1,3 @@
-create 'MOST_VISITED_PAGES', 'outputCF'
-
 create 'USER_SESSION_DETAILS', 'Output_Product_Visits', 'Output_Session_Analysis'
 
 create 'DAILY_UPDATES', 'Output_Hits_By_Day', 'Output_Most_Visited_Pages'

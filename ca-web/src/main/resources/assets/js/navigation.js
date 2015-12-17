@@ -18,3 +18,13 @@ function navigateCarousel(slideNum){
 		}	
 		return false;	
 	});
+
+
+function getDateObjectForAttribute(rowkey)
+{
+	return new Date(rowkey);
+	if (rowkey.length == 10)
+		return new Date(rowkey.substring(3,5) + "-" + rowkey.substring(0,2) + "-" + rowkey.substring(6));
+	else
+		return new Date(rowkey.substring(2,4) + "-" + rowkey.substring(0,1) + "-" + rowkey.substring(5));
+}

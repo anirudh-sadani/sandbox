@@ -1,0 +1,9 @@
+/codebase/rampup/sandbox/data-generator/mvn clean package
+ 
+/codebase/rampup/sandbox/data-generator/mvn exec:java 
+
+hadoop-2.7.0/bin/hdfs dfs -rmr -skipTrash /home/asadani/rampup/output*
+
+hadoop-2.7.0/bin/hdfs dfs -rm -skipTrash /home/asadani/rampup/input/*
+
+

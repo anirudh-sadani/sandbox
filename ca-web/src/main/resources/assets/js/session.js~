@@ -74,7 +74,7 @@ drawSessionAnalysis(
 				(
 							function(d) 
 							{ return {
-									x:  new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  d.key.substring(6)), y: d.values 
+									x:  getDateObjectForAttribute(d.key), y: d.values 
 								} 
 							}
 				);

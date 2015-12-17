@@ -1,5 +1,5 @@
 d3.json(
-"/ca/data/most_visited_pages_by_users?startDate=15-11-2015&endDate=10-12-2015", 
+"/ca/data/most_visited_pages_by_users?startDate=1-11-2015&endDate=10-12-2015", 
 function(error, json){
 	if (error) return console.warn(error);
 
@@ -22,7 +22,8 @@ console.log(expensesByName);
 );
 
 function row(rowkey, count, key){
-	this.x = rowkey;
+
+	this.x = getDateObjectForAttribute(rowkey);
 	this.y = count;
 	this.key = key;
 }
@@ -34,10 +35,18 @@ function drawMostVisited(result1){
 		chart.yAxis
 		.tickFormat(d3.format(',.1f'));
 
+chart.xAxis
+       .axisLabel('Date')
+       .rotateLabels(-45)
+       .tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); });
+
+//chart.xScale(d3.time.scale());
 //chart.yRange([0,0,0,10,2000]);
 
 		d3.select('#mostvisited svg')
-		.datum(sinAndCos())
+		.style("width", 800)                                               
+		.style("height", 375)
+		.datum(result1)
 		.transition().duration(500)
 		.call(chart);
 
@@ -47,36 +56,6 @@ function drawMostVisited(result1){
 	});
 }
 
-function sinAndCos() {
-  var sin = [],sin2 = [],
-      cos = [];
 
-  //Data is represented as an array of {x,y} pairs.
-  for (var i = 0; i < 100; i++) {
-    sin.push({x: i, y: Math.sin(i/10)});
-    sin2.push({x: i, y: Math.sin(i/10) *0.25 + 0.5});
-    cos.push({x: i, y: .5 * Math.cos(i/10)});
-  }
-
-  //Line chart data should be sent as an array of series objects.
-  return [
-    {
-      values: sin,      //values - represents the array of {x,y} data points
-      key: 'Sine Wave', //key  - the name of the series.
-      color: '#ff7f0e'  //color - optional: choose your own line color.
-    },
-    {
-      values: cos,
-      key: 'Cosine Wave',
-      color: '#2ca02c'
-    },
-    {
-      values: sin2,
-      key: 'Another sine wave',
-      color: '#7777ff',
-      area: true      //area - set to true if you want this line to turn into a filled area chart.
-    }
-  ];
-}
 
 

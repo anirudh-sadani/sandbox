@@ -1,5 +1,5 @@
 d3.json(
-"/ca/data/session_details?startDate=10-11-2015&endDate=30-11-2015", 
+"/ca/data/session_details?startDate=1-10-2015&endDate=30-12-2015", 
 function(error, json){
 	if (error) return console.warn(error);
 
@@ -74,7 +74,7 @@ drawSessionAnalysis(
 				(
 							function(d) 
 							{ return {
-									x:  new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  d.key.substring(6)), y: d.values 
+									x:  getDateObjectForAttribute(d.key), y: d.values 
 								} 
 							}
 				);

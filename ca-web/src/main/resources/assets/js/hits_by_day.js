@@ -1,5 +1,5 @@
 d3.json(
-"/ca/data/hits_by_day?startDate=10-11-2015&endDate=30-11-2015", 
+"/ca/data/hits_by_day?startDate=1-10-2015&endDate=30-11-2015", 
 function(error, json){
 	if (error) return console.warn(error);
 
@@ -19,7 +19,7 @@ function(error, json){
 	  }).entries(result);
 
 updated_result.forEach(function(d) {
- d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" + d.key.substring(6));
+ d.x = getDateObjectForAttribute(d.key);
  d.y = d.values;
 });
 
@@ -48,13 +48,12 @@ function hitsbydayRow(rowkey, count)
 function drawHitsByDay(result1)
 {
 	  nv.addGraph(function() {
-        var chart = nv.models.lineChart()
-            .useInteractiveGuideline(true)
+        var chart = nv.models.discreteBarChart()
+
             .x(function(d) { return d.x })
-            .y(function(d) { alert(d.y); return d.y })
+            .y(function(d) { return d.y })
             .color(d3.scale.category10().range())
-            .duration(300)
-            .clipVoronoi(false);
+            .duration(300);;
         chart.dispatch.on('renderEnd', function() {
             console.log('render complete: cumulative line with guide line');
         });

@@ -43,43 +43,9 @@ STORE COUNT_HITS_BY_ZIP_PURCHASED INTO '/home/asadani/rampup/output/pig_output/c
 
 =============== WORKING - USER SESSION ANALYSIS ================
 
-REGISTER /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/target/ca-etl-0.0.1-SNAPSHOT.jar;
-
-FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, userBrowser:chararray,  eventDate:chararray, eventMonth:chararray, eventYear:chararray);
-
-illustrate FLAT_DATA;
-
-FLAT_DATA_WITH_DATE = foreach FLAT_DATA generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, userBrowser, CONCAT(CONCAT(CONCAT((chararray)eventDate, '-'), (chararray)eventMonth, '-'), (chararray)eventYear) AS eventDateCon:chararray;
-
-FLAT_DATA_WITH_DATE_ORDERED = ORDER FLAT_DATA_WITH_DATE BY timestamp ASC;
-
-GROUPED_BY_USER_AUTH_TOKEN = GROUP FLAT_DATA_WITH_DATE_ORDERED BY (userAuthToken);
-
-SESSION_DETAILS = FOREACH GROUPED_BY_USER_AUTH_TOKEN GENERATE com.asadani.ca.pig.udf.SessionAnalyzer(FLAT_DATA_WITH_DATE_ORDERED) AS session;
-
-STORE SESSION_DETAILS INTO '/home/asadani/rampup/output/pig_output/session_activity' using PigStorage(',');
 
 ==================================
 
-=============== WORKING - USER SESSION ANALYSIS ================
-
-REGISTER /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/target/ca-etl-0.0.1-SNAPSHOT.jar;
-
-FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, userBrowser:chararray,  eventDate:chararray, eventMonth:chararray, eventYear:chararray);
-
-illustrate FLAT_DATA;
-
-FLAT_DATA_WITH_DATE = foreach FLAT_DATA generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, userBrowser, CONCAT(CONCAT(CONCAT((chararray)eventDate, '-'), (chararray)eventMonth, '-'), (chararray)eventYear) AS eventDateCon:chararray;
-
-FLAT_DATA_WITH_DATE_ORDERED = ORDER FLAT_DATA_WITH_DATE BY timestamp ASC;
-
-GROUPED_BY_USER_AUTH_TOKEN = GROUP FLAT_DATA_WITH_DATE_ORDERED BY (userAuthToken);
-
-SESSION_DETAILS = FOREACH GROUPED_BY_USER_AUTH_TOKEN GENERATE com.asadani.ca.pig.udf.SessionAnalyzer(FLAT_DATA_WITH_DATE_ORDERED) AS session;
-
-STORE SESSION_DETAILS INTO '/home/asadani/rampup/output/pig_output/session_activity' using PigStorage(',');
-
-==================================
 
 
 hadoop-2.7.0/bin/hadoop jar /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/target/ca-etl-0.0.1-SNAPSHOT.jar com.asadani.ca.dataload.MostVisitedPagesUploader
