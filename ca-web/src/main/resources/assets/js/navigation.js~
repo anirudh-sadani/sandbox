@@ -1,15 +1,4 @@
-var currentDrawn = "mostvisited";
 
-function toggleViews(action) {
-
-eval('$("#'+ currentDrawn + '").toggle();');
-
-eval('$("#'+ action + '").toggle();');
-	currentDrawn = action;
-    
-alert(currentDrawn);
-
-}
 
 function navigateCarousel(slideNum){
 
@@ -19,12 +8,3 @@ function navigateCarousel(slideNum){
 
 }
 
-function showECommerce(){
-$("#first").hide();
-
-$("#second").show();
-
-
-
-}
-showUserSession();

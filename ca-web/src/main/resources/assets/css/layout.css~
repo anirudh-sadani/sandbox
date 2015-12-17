@@ -1,23 +1,28 @@
-#filter {
-    line-height:30px;
-    background-color:#eeeeee;
-    height:560px;
-    width:20%;
-    float:left;
-    padding:5px;
- 
-}
 #section {
-    width:75%;
- 	height:560px;
+    width:95%;
+ 	height:475px;
     float:left;
-    padding:5px; 
+    padding:1px; 
 }
 #footer {
     background-color:black;
     color:white;
     clear:both;
     text-align:center;
-    padding:5px; 
-	height:25px;
+    padding:1px; 
+	height:20px;
+}
+
+
+#slide-panel {
+    width:300px;
+    height:300px;
+    padding:10px;
+    background:#eee;
+    margin-left:-300px;
+}
+#opener {
+    float:right;
+    margin:-10px -50px 0px 0px;
+    border-radius:0;
 }
