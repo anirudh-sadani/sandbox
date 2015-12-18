@@ -51,7 +51,11 @@ public class JSONDataFlattener {
 				sb.append(",");
 				sb.append(eventData.get("userBrowser"));
 				sb.append(",");
-				sb.append(temp.get(Calendar.DATE));
+				
+				if (temp.get(Calendar.DATE) <= 9)
+					sb.append("0" + temp.get(Calendar.DATE));
+				else					
+					sb.append(temp.get(Calendar.DATE));
 				sb.append(",");
 				sb.append(temp.get(Calendar.MONTH) + 1);
 				sb.append(",");

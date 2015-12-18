@@ -29,12 +29,12 @@
 <script src="./js/hits_by_day.js"></script>
 <script src="./js/session.js"></script>
 
-<script src="./js/navigation.js"></script>
+
 <script type="text/javascript"
 	src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript"
 	src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-
+<script src="./js/navigation.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-inverse">
@@ -49,10 +49,10 @@
 						data-toggle="dropdown" href="#">Traffic Analysis <span
 							class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#" onClick="navigateCarousel(0);">Hits By Day</a></li>
-							<li><a href="#" onClick="navigateCarousel(1);">Most
+							<li><a href="#" onClick="navigateCarousel(0);doChanges('Hits By Day');">Hits By Day</a></li>
+							<li><a href="#" onClick="navigateCarousel(1);doChanges('Most Visited Pages');">Most
 									Visited Pages</a></li>
-							<li><a href="#" onClick="navigateCarousel(2);">Geo
+							<li><a href="#" onClick="navigateCarousel(2);doChanges('Geo Analysis');">Geo
 									Analysis</a></li>
 						</ul></li>
 
@@ -60,13 +60,12 @@
 						data-toggle="dropdown" href="#">E-Commerce Analysis <span
 							class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#" onClick="navigateCarousel(3);">Item
+							<li><a href="#" onClick="navigateCarousel(3);doChanges('Item Visits');">Item
 									Visits</a></li>
-							<li><a href="#" onClick="navigateCarousel(4);">Shopping
-									Cart</a></li>
-							<li><a href="#" onClick="navigateCarousel(5);">Spending
+							<li><a href="#" onClick="navigateCarousel(4);doChanges('Shopping Cart');"></a></li>
+							<li><a href="#" onClick="navigateCarousel(5);doChanges('Spending Trends');">Spending
 									Trends</a></li>
-							<li><a href="#" onClick="navigateCarousel(6);">Conversion
+							<li><a href="#" onClick="navigateCarousel(6);doChanges('Conversion Ratio');">Conversion
 									Ratio</a></li>
 						</ul></li>
 
@@ -74,10 +73,10 @@
 						data-toggle="dropdown" href="#">User Session Analysis <span
 							class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#" onClick="navigateCarousel(7);">Session
+							<li><a href="#" onClick="navigateCarousel(7);doChanges('Session Activity');">Session
 									Activity</a></li>
-							<li><a href="#" onClick="navigateCarousel(8);">Back &
-									Refresh</a></li>
+							<li><a href="#" onClick="navigateCarousel(8);doChanges('Conversion Ratio');">Conversion
+									Ratio</a></li>
 						</ul></li>
 				</ul>
 			</div>
@@ -87,6 +86,11 @@
 
 
 	<div id="filter">
+		<div id="sdf" style="float: left; width: 35%">
+			<span id= "reportTitle"><font color="black" size=6 >&nbsp;&nbsp;&nbsp;Hits By Day</font></span>
+
+
+		</div>
 		<div id="reportrange" class="pull-right"
 			style="background: #fff; cursor: pointer; padding: 5px ; border: 1px solid #ccc; width: 35%">
 			<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp; <span></span>
@@ -113,48 +117,41 @@
 			<!-- Wrapper for slides -->
 			<div class="carousel-inner" role="listbox">
 
-				<div class="item active" id="hitsbyday" style="height: 500px">
+				<div class="item active" id="hitsbyday">
 					
 					<svg></svg>
 				</div>
-				<div class="item" id="mostvisited" style="height: 500px">
+				<div class="item" id="mostvisited">
 					<h5>Most Visited Pages By Users</h5>
 					<svg></svg>
 				</div>
-				<div class="item" id="geoanalysis"
-					style="height: 500px width: 500px">
+				<div class="item" id="geoanalysis">
 					<h5>Geo Analysis</h5>
 					<svg></svg>
 				</div>
 
-				<div class="item" id="itemanalysis"
-					style="height: 500px width: 500px">
+				<div class="item" id="itemanalysis">
 					<h5>Item Visit Analysis</h5>
 					<svg></svg>
 				</div>
 
-				<div class="item" id="cartanalysis"
-					style="height: 500px width: 500px">
+				<div class="item" id="cartanalysis">
 					<h5>Shopping Cart Analysis</h5>
 					<svg></svg>
 				</div>
-				<div class="item" id="trendanalysis"
-					style="height: 500px width: 500px">
+				<div class="item" id="trendanalysis">
 					<h5>Shopping Trends Analysis</h5>
 					<svg style="height: inherit"></svg>
 				</div>
-				<div class="item" id="conversionanalysis"
-					style="height: 500px width: 500px">
+				<div class="item" id="conversionanalysis">
 					<h5>Items visit vs purchase ratio</h5>
 					<svg></svg>
 				</div>
-				<div class="item" id="sessionanalysis"
-					style="height: 500px width: 500px">
+				<div class="item" id="sessionanalysis">
 					<h5>Session Analysis</h5>
 					<svg></svg>
 				</div>
-				<div class="item" id="backrefreshanalysis"
-					style="height: 500px width: 500px">
+				<div class="item" id="backrefreshanalysis">
 					<h5>Back Refresh Analysis</h5>
 					<svg></svg>
 				</div>

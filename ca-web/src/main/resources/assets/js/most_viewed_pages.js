@@ -42,10 +42,15 @@ chart.xAxis
 
 //chart.xScale(d3.time.scale());
 //chart.yRange([0,0,0,10,2000]);
+//chart.bars.forceY([0,500]);
+ chart.xAxis
+       .axisLabel('Date')
+       .rotateLabels(-45)
+       .tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); });
 
 		d3.select('#mostvisited svg')
-		.style("width", 800)                                               
-		.style("height", 375)
+		.style("width", 1200)                                               
+		.style("height", 510)
 		.datum(result1)
 		.transition().duration(500)
 		.call(chart);

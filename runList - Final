@@ -1,6 +1,8 @@
 hadoop-2.7.0/bin/hdfs dfs -rmr -skipTrash /home/asadani/rampup/output*
 hadoop-2.7.0/bin/hdfs dfs -rm -skipTrash /home/asadani/rampup/input/*
 hadoop-2.7.0/bin/hdfs dfs -copyFromLocal ../user-traffic.log /home/asadani/rampup/input
+hadoop-2.7.0/bin/hdfs dfs -copyFromLocal ../prod_cat_ref_data.txt /home/asadani/rampup/input
+
 
 
 ===============WORKING - LOCATION _ WISE================
@@ -27,11 +29,6 @@ STORE COUNT_HITS_BY_ZIP_PURCHASED INTO '/home/asadani/rampup/output/pig_output/c
 
 ==================================
 
-=============== WORKING - USER SESSION ANALYSIS ================
-
-
-==================================
-
 
 
 hadoop-2.7.0/bin/hadoop jar /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/target/ca-etl-0.0.1-SNAPSHOT.jar com.asadani.ca.dataload.MostVisitedPagesUploader
@@ -43,56 +40,14 @@ java -jar /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-web/target/ca-web-0.0
 
 
 
-
-
-
-
-
-
-
-
-
-
-CREATE EXTERNAL TABLE event_data
-(
-clientIPAddress STRING, 
-eventTimestamp BIGINT,
-zipcode STRING, 
-httpMethod STRING,
-httpURL STRING,
-userId STRING,
-userAuthToken STRING,
-userBrowser STRING,
-dummy int,
-eventMonth int,
-eventYear int
-)
-PARTITIONED BY(eventDate int)
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
-LOCATION '/home/asadani/rampup/hive/eventDataNew1';
-
-
-LOAD DATA INPATH '/home/asadani/rampup/output/days/*/26*' OVERWRITE INTO TABLE event_data PARTITION (eventDate=26);
-
-
-CREATE EXTERNAL TABLE hits_by_zip
-(
-zipcode STRING, 
-eventDate int,
-eventMonth int,
-eventYear int,
-counter int
-)
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
-LOCATION '/home/asadani/rampup/hive/hitsByZip';
-
-insert into table hits_by_zip 
-select COUNT(*) as counter, zipcode, eventDate, eventMonth, eventYear from event_data group by zipcode, eventDate, eventMonth, eventYear;
-
-
-
-
 ===================================================================================
+
+
+
+
+
+
+
 
 
 

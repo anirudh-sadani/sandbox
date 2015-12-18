@@ -28,3 +28,9 @@ function getDateObjectForAttribute(rowkey)
 	else
 		return new Date(rowkey.substring(2,4) + "-" + rowkey.substring(0,1) + "-" + rowkey.substring(5));
 }
+
+function doChanges(textTitle)
+{
+	alert(textTitle);
+	$('#reportTitle span').html('<font color="black" size=6 >&nbsp;&nbsp;&nbsp;' + textTitle + '</font>');
+}

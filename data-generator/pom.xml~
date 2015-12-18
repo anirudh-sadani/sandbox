@@ -40,6 +40,11 @@
 									<groupId>log4j</groupId>
 									<artifactId>log4j</artifactId>
 								</artifactItem>
+
+								<artifactItem>
+									<groupId>org.cloudera.htrace</groupId>
+									<artifactId>htrace-core</artifactId>
+								</artifactItem>
 							</artifactItems>
 							<outputDirectory>${project.build.directory}/lib</outputDirectory>
 							<overWriteReleases>false</overWriteReleases>

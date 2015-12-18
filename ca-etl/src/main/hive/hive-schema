@@ -1,0 +1,53 @@
+CREATE EXTERNAL TABLE event_data
+(
+clientIPAddress STRING, 
+eventTimestamp BIGINT,
+zipcode STRING, 
+httpMethod STRING,
+httpURL STRING,
+userId STRING,
+userAuthToken STRING,
+userBrowser STRING,
+dummy int,
+eventMonth int,
+eventYear int
+)
+PARTITIONED BY(eventDate int)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/home/asadani/rampup/hive/eventData';
+
+
+CREATE EXTERNAL TABLE hits_by_zip
+(
+zipcode STRING, 
+eventDate int,
+eventMonth int,
+eventYear int,
+counter int
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/home/asadani/rampup/hive/hitsByZip';
+
+
+CREATE EXTERNAL TABLE prod_cat_ref
+(
+productId STRING, 
+categoryId STRING,
+productName STRING,
+categoryName STRING,
+price int
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ',';
+
+LOCATION '/home/asadani/rampup/hive/productRefData';
+
+LOAD DATA INPATH '/home/asadani/rampup/output/days/*/2*' OVERWRITE INTO TABLE event_data PARTITION (eventDate=2);
+LOAD DATA INPATH '/home/asadani/rampup/output/days/*/3*' OVERWRITE INTO TABLE event_data PARTITION (eventDate=3);
+LOAD DATA INPATH '/home/asadani/rampup/output/days/*/4*' OVERWRITE INTO TABLE event_data PARTITION (eventDate=4);
+LOAD DATA INPATH '/home/asadani/rampup/output/days/*/5*' OVERWRITE INTO TABLE event_data PARTITION (eventDate=5);
+LOAD DATA INPATH '/home/asadani/rampup/output/days/*/6*' OVERWRITE INTO TABLE event_data PARTITION (eventDate=6);
+LOAD DATA INPATH '/home/asadani/rampup/output/days/*/7*' OVERWRITE INTO TABLE event_data PARTITION (eventDate=7);
+LOAD DATA INPATH '/home/asadani/rampup/output/days/*/8*' OVERWRITE INTO TABLE event_data PARTITION (eventDate=8);
+LOAD DATA INPATH '/home/asadani/rampup/output/days/*/9*' OVERWRITE INTO TABLE event_data PARTITION (eventDate=9);
+
+LOAD DATA INPATH '/home/asadani/rampup/input/prod_cat_ref_data.txt' OVERWRITE INTO TABLE prod_cat_ref;

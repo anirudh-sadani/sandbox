@@ -50,22 +50,22 @@ var updated_wishlist = d3.nest()
   }).entries(wishlist);
 
 updated_cart.forEach(function(d) {
- d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  d.key.substring(6));
+ d.x = getDateObjectForAttribute(d.key);
  d.y = d.values;
 });
 
 updated_viewed.forEach(function(d) {
- d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  d.key.substring(6));
+ d.x = getDateObjectForAttribute(d.key);
  d.y = d.values;
 });
 
 updated_purchased.forEach(function(d) {
- d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  d.key.substring(6));
+ d.x = getDateObjectForAttribute(d.key);
  d.y = d.values;
 });
 
 updated_wishlist.forEach(function(d) {
- d.x = new Date(d.key.substring(3,5) + "-" + d.key.substring(0,2) + "-" +  d.key.substring(6));
+ d.x = getDateObjectForAttribute(d.key);
  d.y = d.values;
 });
 
@@ -130,8 +130,8 @@ chart.xScale(d3.time.scale());
 		  /* Done setting the chart up? Time to render it!*/
 
 		  d3.select('#itemanalysis svg') 
-.style("width", 800)                                               
-.style("height", 400)   //Select the <svg> element you want to render the chart in.   
+.style("width", 1200)                                               
+		.style("height", 510) //Select the <svg> element you want to render the chart in.   
 		      .datum(result1)         //Populate the <svg> element with chart data...
 		      .call(chart);          //Finally, render the chart!
 

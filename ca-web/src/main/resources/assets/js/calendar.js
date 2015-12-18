@@ -4,7 +4,7 @@ $(function() {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
     }
-    cb(moment().subtract(29, 'days'), moment());
+    cb(moment().subtract(14, 'days'), moment());
 
     $('#reportrange').daterangepicker({
         ranges: {

@@ -48,7 +48,7 @@ function hitsbydayRow(rowkey, count)
 function drawHitsByDay(result1)
 {
 	  nv.addGraph(function() {
-        var chart = nv.models.discreteBarChart()
+        var chart = nv.models.lineChart()
 
             .x(function(d) { return d.x })
             .y(function(d) { return d.y })
@@ -57,11 +57,15 @@ function drawHitsByDay(result1)
         chart.dispatch.on('renderEnd', function() {
             console.log('render complete: cumulative line with guide line');
         });
-        chart.xAxis.tickFormat(function(d) {
-            return d3.time.format('%m/%d/%y')(new Date(d))
-        });
-        chart.yAxis.tickFormat(d3.format(',.1f'));
+chart.lines.forceY([0, 10000]);
+ chart.xAxis
+       .axisLabel('Date')
+       .rotateLabels(-45)
+       .tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); });
+        chart.yAxis.tickFormat(d3.format(',.0f'));
         d3.select('#hitsbyday svg')
+.style("width", 1200)                                               
+		.style("height", 510)
             .datum(result1)
             .call(chart);
         //TODO: Figure out a good way to do this automatically

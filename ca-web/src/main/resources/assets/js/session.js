@@ -1,5 +1,5 @@
 d3.json(
-"/ca/data/session_details?startDate=1-10-2015&endDate=30-12-2015", 
+"/ca/data/session_details?startDate=1-11-2015&endDate=30-11-2015", 
 function(error, json){
 	if (error) return console.warn(error);
 
@@ -12,7 +12,7 @@ var refresh = [];
 			if(propName == 'duration'){
 				var sessionItem = [];
 				sessionItem.push(json[i].datekey);
-				sessionItem.push(json[i][propName]);
+				sessionItem.push(json[i][propName]/(1000*60));
 				sessionDuration.push(sessionItem );
 			}
 			if(propName == 'backCnt'){
@@ -34,7 +34,7 @@ var refresh = [];
 	var updated_back = d3.nest()
 	  .key(function(d) { return d[0];})
 	  .rollup(function(d) { 
-	   return d3.sum(d, function(g) { return g[1]; });
+	   return d3.mean(d, function(g) { return g[1]; });
 	  }).entries(back);
 
 
@@ -91,21 +91,21 @@ function drawSessionAnalysis(chartData)
     nv.addGraph(function() {
 	var chart;
         chart = nv.models.linePlusBarChart()
-            .margin({top: 50, right: 60, bottom: 30, left: 70})
             .legendRightAxisHint(' [Using Right Axis]')
             .color(d3.scale.category10().range());
         chart.xAxis.tickFormat(function(d) {
                 return d3.time.format('%x')(new Date(d))
             })
             .showMaxMin(false);
-        chart.y1Axis.tickFormat(function(d) { return '$' + d3.format(',f')(d) });
+        chart.y1Axis.tickFormat(function(d) { return d3.format(',f')(d) });
         chart.bars.forceY([0]).padData(false);
         chart.x2Axis.tickFormat(function(d) {
             return d3.time.format('%x')(new Date(d))
         }).showMaxMin(false);
         d3.select('#sessionanalysis svg')
-		.style("width", 800)                                               
-.style("height", 450)
+		                                           
+.style("width", 1200)                                               
+		.style("height", 510)
             .datum(chartData)
             .transition().duration(500).call(chart);
         nv.utils.windowResize(chart.update);

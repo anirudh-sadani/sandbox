@@ -2,7 +2,7 @@ REGISTER /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/target/ca-etl-0.0.
 
 FLAT_DATA = load '/home/asadani/rampup/output/days/*' USING PigStorage(',') AS (clientIPAddress:chararray, timestamp:chararray, zipcode:chararray, httpMethod:chararray, httpURL:chararray, userId:chararray, userAuthToken:chararray, userBrowser:chararray,  eventDate:chararray, eventMonth:chararray, eventYear:chararray);
 
-FLAT_DATA_WITH_DATE = foreach FLAT_DATA generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, userBrowser, CONCAT(CONCAT(CONCAT((chararray)eventDate, '-'), (chararray)eventMonth, '-'), (chararray)eventYear) AS eventDateCon:chararray;
+FLAT_DATA_WITH_DATE = foreach FLAT_DATA generate clientIPAddress, timestamp, zipcode, httpMethod, httpURL, userId, userAuthToken, userBrowser, CONCAT(CONCAT(CONCAT((chararray)eventYear, '-'), (chararray)eventMonth, '-'), (chararray)eventDate) AS eventDateCon:chararray;
 
 FLAT_DATA_WITH_DATE_ORDERED = ORDER FLAT_DATA_WITH_DATE BY timestamp ASC;
 
