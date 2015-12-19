@@ -3,6 +3,14 @@ $(function() {
     function cb(start, end) {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
+	initiateSessionAnalysis(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
+	initiateHitsByDay(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
+	initiateMostViewed(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
+	initiateCartAnalysis(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
+	inititateConversion(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
+	inititateItemVisits(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
+
+
     }
     cb(moment().subtract(14, 'days'), moment());
 
@@ -18,3 +26,8 @@ $(function() {
     }, cb);
 
 });
+
+function changeTitle(textTitle)
+{
+	$('#reportTitle span').html('<font color="black" size=5 >&nbsp;&nbsp;&nbsp;' + textTitle + '</font>');
+}

@@ -1,11 +1,11 @@
+function initiateCartAnalysis(startDate, endDate){
  var chart;
     nv.addGraph(function() {
         chart = nv.models.sunburstChart();
         chart.color(d3.scale.category20c());
         d3.select("#trendanalysis svg")
-                                              
-.style("width", 1200)                                               
-		.style("height", 510)
+.style("height", chartHeight)                                               
+		.style("width", chartWidth)
                 .datum(getData())
 
                 .call(chart);
@@ -132,16 +132,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 ];
     }
+}

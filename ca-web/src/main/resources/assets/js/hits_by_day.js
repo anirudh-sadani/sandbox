@@ -1,5 +1,6 @@
+function initiateHitsByDay(startDate, endDate){
 d3.json(
-"/ca/data/hits_by_day?startDate=1-10-2015&endDate=30-11-2015", 
+"/ca/data/hits_by_day?startDate="+startDate+"&endDate=" + endDate, 
 function(error, json){
 	if (error) return console.warn(error);
 
@@ -37,6 +38,7 @@ color: '#ff7f0e'  //color - optional: choose your own line color.
 }
 
 );
+};
 
 function hitsbydayRow(rowkey, count)
 {
@@ -64,8 +66,8 @@ chart.lines.forceY([0, 10000]);
        .tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); });
         chart.yAxis.tickFormat(d3.format(',.0f'));
         d3.select('#hitsbyday svg')
-.style("width", 1200)                                               
-		.style("height", 510)
+.style("height", chartHeight)                                               
+		.style("width", chartWidth)
             .datum(result1)
             .call(chart);
         //TODO: Figure out a good way to do this automatically

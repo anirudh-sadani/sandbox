@@ -49,34 +49,29 @@
 						data-toggle="dropdown" href="#">Traffic Analysis <span
 							class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#" onClick="navigateCarousel(0);doChanges('Hits By Day');">Hits By Day</a></li>
-							<li><a href="#" onClick="navigateCarousel(1);doChanges('Most Visited Pages');">Most
+							<li><a href="#" onClick="navigateCarousel(0);changeTitle('Hits By Day');">Hits By Day</a></li>
+							<li><a href="#" onClick="navigateCarousel(1);changeTitle('Most Visited Pages');">Most
 									Visited Pages</a></li>
-							<li><a href="#" onClick="navigateCarousel(2);doChanges('Geo Analysis');">Geo
+							<li><a href="#" onClick="navigateCarousel(2);changeTitle('Geo Analysis');">Geo
 									Analysis</a></li>
 						</ul></li>
 
 					<li class="dropdown"><a class="dropdown-toggle"
-						data-toggle="dropdown" href="#">E-Commerce Analysis <span
-							class="caret"></span></a>
+						data-toggle="dropdown" href="#">E-Commerce Analysis<span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#" onClick="navigateCarousel(3);doChanges('Item Visits');">Item
-									Visits</a></li>
-							<li><a href="#" onClick="navigateCarousel(4);doChanges('Shopping Cart');"></a></li>
-							<li><a href="#" onClick="navigateCarousel(5);doChanges('Spending Trends');">Spending
-									Trends</a></li>
-							<li><a href="#" onClick="navigateCarousel(6);doChanges('Conversion Ratio');">Conversion
-									Ratio</a></li>
+						<li><a href="#" onClick="navigateCarousel(3);changeTitle('Item Visits');">Item Visits<a></li>
+						<li><a href="#" onClick="navigateCarousel(4);changeTitle('Shopping Cart');"></a></li>
+					<li><a href="#" onClick="navigateCarousel(5);changeTitle('Spending Trends');">Spending Trends</a></li>
+				<li><a href="#" onClick="navigateCarousel(6);changeTitle('Conversion Ratio');">Conversion Ratio</a></li>
 						</ul></li>
 
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#">User Session Analysis <span
 							class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#" onClick="navigateCarousel(7);doChanges('Session Activity');">Session
+							<li><a href="#" onClick="navigateCarousel(7);changeTitle('Session Activity');">Session
 									Activity</a></li>
-							<li><a href="#" onClick="navigateCarousel(8);doChanges('Conversion Ratio');">Conversion
-									Ratio</a></li>
+							<li><a href="#" onClick="navigateCarousel(8);changeTitle('Back Refresh');">Back Refresh</a></li>
 						</ul></li>
 				</ul>
 			</div>
@@ -86,8 +81,8 @@
 
 
 	<div id="filter">
-		<div id="sdf" style="float: left; width: 35%">
-			<span id= "reportTitle"><font color="black" size=6 >&nbsp;&nbsp;&nbsp;Hits By Day</font></span>
+		<div id="reportTitle" style="float: left; width: 35%">
+			<span><font color="black" size=5 >&nbsp;&nbsp;&nbsp;Hits By Day</font></span>
 
 
 		</div>
@@ -122,37 +117,29 @@
 					<svg></svg>
 				</div>
 				<div class="item" id="mostvisited">
-					<h5>Most Visited Pages By Users</h5>
 					<svg></svg>
 				</div>
 				<div class="item" id="geoanalysis">
-					<h5>Geo Analysis</h5>
 					<svg></svg>
 				</div>
 
 				<div class="item" id="itemanalysis">
-					<h5>Item Visit Analysis</h5>
 					<svg></svg>
 				</div>
 
 				<div class="item" id="cartanalysis">
-					<h5>Shopping Cart Analysis</h5>
 					<svg></svg>
 				</div>
 				<div class="item" id="trendanalysis">
-					<h5>Shopping Trends Analysis</h5>
-					<svg style="height: inherit"></svg>
+					<svg></svg>
 				</div>
 				<div class="item" id="conversionanalysis">
-					<h5>Items visit vs purchase ratio</h5>
 					<svg></svg>
 				</div>
 				<div class="item" id="sessionanalysis">
-					<h5>Session Analysis</h5>
 					<svg></svg>
 				</div>
 				<div class="item" id="backrefreshanalysis">
-					<h5>Back Refresh Analysis</h5>
 					<svg></svg>
 				</div>
 			</div>

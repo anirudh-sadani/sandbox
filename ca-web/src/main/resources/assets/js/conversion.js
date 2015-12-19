@@ -1,5 +1,6 @@
+function inititateConversion(startDate, endDate){
 d3.json(
-"/ca/data/item_visits?startDate=1-11-2015&endDate=30-11-2015", 
+"/ca/data/item_visits?startDate="+startDate+"&endDate=" + endDate, 
 function(error, json){
 	if (error) return console.warn(error);
 
@@ -38,6 +39,7 @@ color: '#ff7f0e'  //color - optional: choose your own line color.
 }]);
 }
 );
+}
 
 function conversionRow(rowkey, count)
 {
@@ -74,8 +76,8 @@ chart.xScale(d3.time.scale());
 		  /* Done setting the chart up? Time to render it!*/
 
 		  d3.select('#conversionanalysis svg') 
-.style("width", 1200)                                               
-		.style("height", 510)  //Select the <svg> element you want to render the chart in.   
+.style("height", chartHeight)                                               
+		.style("width", chartWidth)  //Select the <svg> element you want to render the chart in.   
 		      .datum(result1)         //Populate the <svg> element with chart data...
 		      .call(chart);          //Finally, render the chart!
 

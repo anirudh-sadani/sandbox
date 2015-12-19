@@ -1,5 +1,5 @@
-d3.json(
-"/ca/data/most_visited_pages_by_users?startDate=1-11-2015&endDate=10-12-2015", 
+function initiateMostViewed(startDate, endDate){ d3.json(
+"/ca/data/most_visited_pages_by_users?startDate="+startDate+"&endDate=" + endDate, 
 function(error, json){
 	if (error) return console.warn(error);
 
@@ -20,6 +20,7 @@ console.log(expensesByName);
 	drawMostVisited(expensesByName);
 }
 );
+}
 
 function row(rowkey, count, key){
 
@@ -49,8 +50,8 @@ chart.xAxis
        .tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); });
 
 		d3.select('#mostvisited svg')
-		.style("width", 1200)                                               
-		.style("height", 510)
+		.style("height", chartHeight)                                               
+		.style("width", chartWidth)
 		.datum(result1)
 		.transition().duration(500)
 		.call(chart);
