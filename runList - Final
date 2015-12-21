@@ -31,23 +31,5 @@ STORE COUNT_HITS_BY_ZIP_PURCHASED INTO '/home/asadani/rampup/output/pig_output/c
 
 
 
-hadoop-2.7.0/bin/hadoop jar /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/target/ca-etl-0.0.1-SNAPSHOT.jar com.asadani.ca.dataload.MostVisitedPagesUploader
-
-
 java -jar /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-web/target/ca-web-0.0.1-SNAPSHOT.jar server /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-web/src/main/resources/ca.yaml
-
-
-
-
-
-===================================================================================
-
-
-
-
-
-
-
-
-
 

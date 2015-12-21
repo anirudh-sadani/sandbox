@@ -7,9 +7,17 @@ hadoop-2.7.0/bin/hdfs dfs -rmr -skipTrash /home/asadani/rampup/output*
 hadoop-2.7.0/bin/hdfs dfs -rm -skipTrash /home/asadani/rampup/input/*
 
 hadoop-2.7.0/bin/hdfs dfs -copyFromLocal ../user-traffic.log /home/asadani/rampup/input
+hadoop-2.7.0/bin/hdfs dfs -copyFromLocal ../product_cat_ref_data.txt /home/asadani/rampup/input
+hadoop-2.7.0/bin/hdfs dfs -copyFromLocal ../zipcode.csv /home/asadani/rampup/input
 
 hadoop-2.7.0/bin/hadoop jar /home/IMPETUS/asadani/codebase/rampup/sandbox/data-flattener/target/data-flattener-0.0.1-SNAPSHOT.jar com.asadani.flattener.JSONDataFlattener /home/asadani/rampup/input/user-traffic.log /home/asadani/rampup/output/
 
 pig /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/src/main/pig/daily_hits.pig
+
+pig /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/src/main/pig/item_visits.pig
+
+pig /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/src/main/pig/most_visited_pages.pig
+
+pig /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/src/main/pig/user_session_analysis.pig
 
 

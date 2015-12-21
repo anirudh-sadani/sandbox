@@ -17,18 +17,6 @@ ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 LOCATION '/home/asadani/rampup/hive/eventData';
 
 
-CREATE EXTERNAL TABLE hits_by_zip
-(
-zipcode STRING, 
-eventDate int,
-eventMonth int,
-eventYear int,
-counter int
-)
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
-LOCATION '/home/asadani/rampup/hive/hitsByZip';
-
-
 CREATE EXTERNAL TABLE prod_cat_ref
 (
 productId STRING, 
@@ -37,9 +25,19 @@ productName STRING,
 categoryName STRING,
 price int
 )
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ',';
-
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 LOCATION '/home/asadani/rampup/hive/productRefData';
+
+CREATE EXTERNAL TABLE zip_lat_long_ref
+(
+zipcode STRING, 
+city STRING,
+state STRING,
+latitude STRING,
+longitude STRING
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/home/asadani/rampup/hive/zipLatLongRefData';
 
 LOAD DATA INPATH '/home/asadani/rampup/output/days/*/2*' OVERWRITE INTO TABLE event_data PARTITION (eventDate=2);
 LOAD DATA INPATH '/home/asadani/rampup/output/days/*/3*' OVERWRITE INTO TABLE event_data PARTITION (eventDate=3);
@@ -51,3 +49,5 @@ LOAD DATA INPATH '/home/asadani/rampup/output/days/*/8*' OVERWRITE INTO TABLE ev
 LOAD DATA INPATH '/home/asadani/rampup/output/days/*/9*' OVERWRITE INTO TABLE event_data PARTITION (eventDate=9);
 
 LOAD DATA INPATH '/home/asadani/rampup/input/prod_cat_ref_data.txt' OVERWRITE INTO TABLE prod_cat_ref;
+
+LOAD DATA INPATH '/home/asadani/rampup/input/zipcode.csv' OVERWRITE INTO TABLE zip_lat_long_ref;
