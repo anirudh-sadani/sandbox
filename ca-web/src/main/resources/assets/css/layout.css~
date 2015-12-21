@@ -1,6 +1,6 @@
 #section {
     width:95%;
- 	height:550px;
+ 	height:530px;
     float:left;
     padding:1px; 
 }

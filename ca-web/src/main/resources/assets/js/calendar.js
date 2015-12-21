@@ -9,10 +9,11 @@ $(function() {
 	initiateCartAnalysis(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
 	inititateConversion(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
 	inititateItemVisits(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
+	initiateGeoAnalysis(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
 
 
     }
-    cb(moment().subtract(14, 'days'), moment());
+    cb(moment().subtract(45, 'days'), moment());
 
     $('#reportrange').daterangepicker({
         ranges: {

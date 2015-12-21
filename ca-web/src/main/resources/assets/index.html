@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Click Analytics</title>
 <link rel="stylesheet"
@@ -19,6 +19,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAqqAfIxZeTBdDI0MX1WXliv1U4xtD8SY"></script>
 <script src="./lib/d3.min.js"></script>
 <script src="./lib/nv.d3.min.js"></script>
 <script src="./js/most_viewed_pages.js"></script>
@@ -34,6 +35,8 @@
 	src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript"
 	src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+
+   
 <script src="./js/navigation.js"></script>
 </head>
 <body>
@@ -120,7 +123,8 @@
 					<svg></svg>
 				</div>
 				<div class="item" id="geoanalysis">
-					<svg></svg>
+					<div id="map" style="height: 500px"></div>
+					
 				</div>
 
 				<div class="item" id="itemanalysis">
@@ -159,7 +163,79 @@
 	<div id="footer">Copyright © ClickAnalytics.com</div>
 
 
+<script>
+
+ var citymap = {
+   chicago: {
+     lat: 41.878, 
+	lng: -87.629,
+     population: 2714856
+   },
+   newyork: {
+     lat: 40.714, lng: -74.005,
+     population: 8405837
+   },
+   losangeles: {
+     lat: 34.052, lng: -118.243,
+     population: 3857799
+   },
+   vancouver: {
+     lat: 49.25, lng: -123.1,
+     population: 603502
+   }
+ };
 
 
+
+var mymapData = [{"rowkey":"2015-11-10_10925","hitCount":"22","state":"NY","longitude":"-74.29778","latitude":"41.211794","datekey":"2015-11-10","city":"Greenwood Lake"},{"rowkey":"2015-11-10_13157","hitCount":"17","state":"NY","longitude":"-75.72307","latitude":"43.209147","datekey":"2015-11-10","city":"Sylvan Beach"},{"rowkey":"2015-11-10_14839","hitCount":"26","state":"NY","longitude":"-77.63705","latitude":"42.129806","datekey":"2015-11-10","city":"Greenwood"}];
+
+function initiateGeoAnalysis(startDate, endDate)
+{
+d3.json( 
+"/ca/data/hits_by_location?startDate="+startDate+"&endDate=" + endDate, 
+	function(error, json)
+	{
+		if (error) return console.warn(error);
+
+		initMap(json);
+	});
+
+}
+var map;
+ function initMap(mapData) {
+   // Create the map.
+   map = new google.maps.Map(document.getElementById('map'), {
+     zoom: 3,
+     center: {lat: 37.090, lng: -95.712},
+     mapTypeId: google.maps.MapTypeId.TERRAIN
+   });
+
+
+	for(var i=0; i<mapData.length; i++)
+	{
+		var cityCircle = new google.maps.Circle({
+       strokeColor: '#FF0000',
+       strokeOpacity: 0.8,
+       strokeWeight: 2,
+       fillColor: '#FF0000',
+       fillOpacity: 0.35,
+       map: map,
+       center: new centerItem(parseFloat(mapData[i].latitude), parseFloat(mapData[i].longitude)),
+       radius: Math.sqrt(parseInt(mapData[i].hitCount)) * 1000
+     });
+	}
+
+ 
+ }
+
+function centerItem(lat, lng)
+{
+	this.lat=lat;
+	this.lng=lng;
+	
+}
+
+</script>
+ 
 </body>
 </html>
