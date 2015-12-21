@@ -159,6 +159,7 @@ public class HBaseQueryExecutor {
 				
 				String rowKeyData = Bytes.toString(result.getRow());
 				
+				System.out.println("rowKeyData" + rowKeyData);
 				familyMap.put(Bytes.toBytes("rowkey"), rowKeyData.getBytes());
 				
 				if(rowKeyData.indexOf("_") != -1)
@@ -217,6 +218,7 @@ public class HBaseQueryExecutor {
 	    	String dateFilterString = 	startCalendar.get(Calendar.YEAR) + "-" +
 	    								(startCalendar.get(Calendar.MONTH) + 1) + "-" +
 	    								(startCalendar.get(Calendar.DAY_OF_MONTH) <= 9 ? "0" +  startCalendar.get(Calendar.DAY_OF_MONTH) :  startCalendar.get(Calendar.DAY_OF_MONTH));
+	    	
 	    	
 	    	filterList.addFilter( new PrefixFilter(dateFilterString.getBytes()));
 	    	

@@ -19,6 +19,8 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import com.asadani.ca.dao.PageHitsDAO;
 import com.asadani.ca.dao.SessionAnalysisDAO;
+import com.asadani.ca.dao.SpendingTrendsDAO;
+import com.asadani.ca.dao.ZipHitsDAO;
 import com.asadani.ca.hbase.HBaseConnectionManager;
 import com.asadani.ca.hbase.HBaseQueryExecutor;
 
@@ -34,11 +36,17 @@ public class CAResource {
 	
 	private SessionAnalysisDAO sessionAnalysisDao;
 	
+	private ZipHitsDAO zipHitsDAO;
+	
+	private SpendingTrendsDAO spendingTrendsDAO;
+	
 	public CAResource(){
 		HBaseConnectionManager manager = new HBaseConnectionManager();
 		HBaseQueryExecutor executor = new HBaseQueryExecutor(manager);
 		this.pageHitsDao = new PageHitsDAO(executor);
 		this.sessionAnalysisDao = new SessionAnalysisDAO(executor);
+		this.zipHitsDAO = new ZipHitsDAO(executor);
+		this.spendingTrendsDAO = new SpendingTrendsDAO(executor);
 	}
 	
 	@GET
@@ -134,6 +142,34 @@ public List<Map<String, String>> sessionDetails(@QueryParam("startDate") String 
     }
 	
 	@GET
+    @Path("hits_by_location")
+public List<Map<String, String>> hitsbyLocationdetails(@QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate){
+    	
+		List<Map<byte[], byte[]>> result = zipHitsDAO.getHitsByZipDataData(startDate, endDate);
+		
+		java.util.Iterator<Map<byte[], byte[]>> iter = result.iterator();
+		
+		NavigableMap<byte[], byte[]> tempObject;
+		
+		List<Map<String, String>> finalResult = new ArrayList<Map<String, String>> ();
+		
+		while (iter.hasNext())
+		{
+			tempObject = (NavigableMap<byte[], byte[]>) iter.next();
+			Map<String, String> resultMap = new HashMap<String, String> (); 
+						
+			for(Entry<byte[], byte[]> entry : tempObject.entrySet()){
+				resultMap.put(Bytes.toString(entry.getKey()), Bytes.toString(entry.getValue()) );
+			}
+			finalResult.add(resultMap);
+		}
+		
+		//NavigableMap<byte[], byte[]>
+		System.out.println(finalResult);
+		return finalResult;
+    }
+	
+	@GET
     @Path("item_visits")
 public List<Map<String, String>> itemVisits(@QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate){
     	
@@ -160,6 +196,36 @@ public List<Map<String, String>> itemVisits(@QueryParam("startDate") String star
 		System.out.println(finalResult);
 		return finalResult;
     }
+	
+	@GET
+    @Path("spending_trends")
+public List<Map<String, String>> spendingTrends(@QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate){
+    	
+		List<Map<byte[], byte[]>> result = spendingTrendsDAO.getSpendingTrendsData(startDate, endDate);
+		
+		java.util.Iterator<Map<byte[], byte[]>> iter = result.iterator();
+		
+		NavigableMap<byte[], byte[]> tempObject;
+		
+		List<Map<String, String>> finalResult = new ArrayList<Map<String, String>> ();
+		
+		while (iter.hasNext())
+		{
+			tempObject = (NavigableMap<byte[], byte[]>) iter.next();
+			Map<String, String> resultMap = new HashMap<String, String> (); 
+						
+			for(Entry<byte[], byte[]> entry : tempObject.entrySet()){
+				resultMap.put(Bytes.toString(entry.getKey()), Bytes.toString(entry.getValue()) );
+			}
+			finalResult.add(resultMap);
+		}
+		
+		//NavigableMap<byte[], byte[]>
+		System.out.println(finalResult);
+		return finalResult;
+    }
+	
+	
 	
 public static void main (String args[])
 {
