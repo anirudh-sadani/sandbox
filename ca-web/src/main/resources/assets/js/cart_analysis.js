@@ -13,9 +13,6 @@ function initiateCartAnalysis(startDate, endDate)
  	drawSunBurst(chartData);
 	
 		});
-
-
-
 }
 
 function drawSunBurst(chartData)
@@ -38,9 +35,6 @@ function drawSunBurst(chartData)
 }
 
 function getTransformedData(rawData){
-
-
-
 
 var newData = { name :"name", children : [] },
     levels = ["categoryName","productName"];

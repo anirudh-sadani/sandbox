@@ -19,6 +19,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAqqAfIxZeTBdDI0MX1WXliv1U4xtD8SY"></script>
 <script src="./lib/d3.min.js"></script>
 <script src="./lib/nv.d3.min.js"></script>
 <script src="./js/most_viewed_pages.js"></script>
@@ -28,6 +29,7 @@
 <script src="./js/cart_analysis.js"></script>
 <script src="./js/hits_by_day.js"></script>
 <script src="./js/session.js"></script>
+<script src="./js/geo_analysis.js"></script>
 
 
 <script type="text/javascript"
@@ -235,6 +237,6 @@ function centerItem(lat, lng)
 }
 
 </script>
- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAqqAfIxZeTBdDI0MX1WXliv1U4xtD8SY"></script>
+ 
 </body>
 </html>

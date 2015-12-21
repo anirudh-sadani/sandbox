@@ -1,5 +1,5 @@
 var chartHeight = 510;
-var chartWidth = 1300;
+var chartWidth = 1275;
 
 function navigateCarousel(slideNum){
 

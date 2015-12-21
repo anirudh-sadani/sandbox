@@ -1,241 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Click Analytics</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+		<link rel="stylesheet" type="text/css" href="css/nv.d3.css">
+		<link rel="stylesheet" type="text/css" href="css/layout.css">
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Click Analytics</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+		<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAqqAfIxZeTBdDI0MX1WXliv1U4xtD8SY&callback=initiateGeoAnalysis"></script>
 
-<link rel="stylesheet" type="text/css"
-	href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-<link rel="stylesheet" type="text/css" href="css/nv.d3.css">
-<link rel="stylesheet" type="text/css" href="css/layout.css">
-
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAqqAfIxZeTBdDI0MX1WXliv1U4xtD8SY"></script>
-<script src="./lib/d3.min.js"></script>
-<script src="./lib/nv.d3.min.js"></script>
-<script src="./js/most_viewed_pages.js"></script>
-<script src="./js/calendar.js"></script>
-<script src="./js/itemvisits.js"></script>
-<script src="./js/conversion.js"></script>
-<script src="./js/cart_analysis.js"></script>
-<script src="./js/hits_by_day.js"></script>
-<script src="./js/session.js"></script>
-
-
-<script type="text/javascript"
-	src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript"
-	src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-
-   
-<script src="./js/navigation.js"></script>
-</head>
-<body>
-	<nav class="navbar navbar-inverse">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Click Insights</a>
-			</div>
+		<script src="./lib/d3.min.js"></script>
+		<script src="./lib/nv.d3.min.js"></script>
+		<script src="./js/most_viewed_pages.js"></script>
+		<script src="./js/calendar.js"></script>
+		<script src="./js/itemvisits.js"></script>
+		<script src="./js/conversion.js"></script>
+		<script src="./js/cart_analysis.js"></script>
+		<script src="./js/hits_by_day.js"></script>
+		<script src="./js/session.js"></script>
+		<script src="./js/geo_analysis.js"></script>
+		<script src="./js/navigation.js"></script>
+	</head>
+	<body>
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">Click Insights</a>
+				</div>
 			<div>
-				<ul class="nav navbar-nav">
-
-					<li class="dropdown"><a class="dropdown-toggle"
-						data-toggle="dropdown" href="#">Traffic Analysis <span
-							class="caret"></span></a>
-						<ul class="dropdown-menu">
-							<li><a href="#" onClick="navigateCarousel(0);changeTitle('Hits By Day');">Hits By Day</a></li>
-							<li><a href="#" onClick="navigateCarousel(1);changeTitle('Most Visited Pages');">Most
-									Visited Pages</a></li>
-							<li><a href="#" onClick="navigateCarousel(2);changeTitle('Geo Analysis');">Geo
-									Analysis</a></li>
-						</ul></li>
-
-					<li class="dropdown"><a class="dropdown-toggle"
-						data-toggle="dropdown" href="#">E-Commerce Analysis<span class="caret"></span></a>
-						<ul class="dropdown-menu">
+			<ul class="nav navbar-nav">
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Traffic Analysis <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="#" onClick="navigateCarousel(0);changeTitle('Hits By Day');">Hits By Day</a></li>
+						<li><a href="#" onClick="navigateCarousel(1);changeTitle('Most Visited Pages');">Most Visited Pages</a></li>
+						<li><a href="#" onClick="navigateCarousel(2);changeTitle('Geo Analysis');">Geo Analysis</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">E-Commerce Analysis<span class="caret"></span></a>
+					<ul class="dropdown-menu">
 						<li><a href="#" onClick="navigateCarousel(3);changeTitle('Item Visits');">Item Visits<a></li>
 						<li><a href="#" onClick="navigateCarousel(4);changeTitle('Shopping Cart');"></a></li>
-					<li><a href="#" onClick="navigateCarousel(5);changeTitle('Spending Trends');">Spending Trends</a></li>
-				<li><a href="#" onClick="navigateCarousel(6);changeTitle('Conversion Ratio');">Conversion Ratio</a></li>
-						</ul></li>
-
-					<li class="dropdown"><a class="dropdown-toggle"
-						data-toggle="dropdown" href="#">User Session Analysis <span
-							class="caret"></span></a>
-						<ul class="dropdown-menu">
-							<li><a href="#" onClick="navigateCarousel(7);changeTitle('Session Activity');">Session
-									Activity</a></li>
-							<li><a href="#" onClick="navigateCarousel(8);changeTitle('Back Refresh');">Back Refresh</a></li>
-						</ul></li>
-				</ul>
+						<li><a href="#" onClick="navigateCarousel(5);changeTitle('Spending Trends');">Spending Trends</a></li>
+						<li><a href="#" onClick="navigateCarousel(6);changeTitle('Conversion Ratio');">Conversion Ratio</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">User Session Analysis <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="#" onClick="navigateCarousel(7);changeTitle('Session Activity');">Session Activity</a></li>
+						<li><a href="#" onClick="navigateCarousel(8);changeTitle('Back Refresh');">Back Refresh</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+		
+		<div id="filter">
+			<div id="reportTitle" style="float: left; width: 35%">
+				<span><font color="black" size=5 >&nbsp;&nbsp;&nbsp;Hits By Day</font></span>
+			</div>
+			<div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px ; border: 1px solid #ccc; width: 35%">
+				<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp; <span></span>
+				<b class="caret"></b>
 			</div>
 		</div>
-	</nav>
 
-
-
-	<div id="filter">
-		<div id="reportTitle" style="float: left; width: 35%">
-			<span><font color="black" size=5 >&nbsp;&nbsp;&nbsp;Hits By Day</font></span>
-
-
-		</div>
-		<div id="reportrange" class="pull-right"
-			style="background: #fff; cursor: pointer; padding: 5px ; border: 1px solid #ccc; width: 35%">
-			<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp; <span></span>
-			<b class="caret"></b>
-
-		</div>
-	</div>
-
-	<div id="section">
-	<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
-			<!-- Indicators -->
-			<ol class="carousel-indicators">
-				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-				<li data-target="#myCarousel" data-slide-to="1"></li>
-				<li data-target="#myCarousel" data-slide-to="2"></li>
-				<li data-target="#myCarousel" data-slide-to="3"></li>
-				<li data-target="#myCarousel" data-slide-to="4"></li>
-				<li data-target="#myCarousel" data-slide-to="5"></li>
-				<li data-target="#myCarousel" data-slide-to="6"></li>
-				<li data-target="#myCarousel" data-slide-to="7"></li>
-				<li data-target="#myCarousel" data-slide-to="8"></li>
-			</ol>
-
-			<!-- Wrapper for slides -->
-			<div class="carousel-inner" role="listbox">
-
-				<div class="item active" id="hitsbyday">
-					
-					<svg></svg>
-				</div>
-				<div class="item" id="mostvisited">
-					<svg></svg>
-				</div>
-				<div class="item" id="geoanalysis">
-					<div id="map" style="height: 500px"></div>
-					
-				</div>
-
-				<div class="item" id="itemanalysis">
-					<svg></svg>
-				</div>
-
-				<div class="item" id="cartanalysis">
-					<svg></svg>
-				</div>
-				<div class="item" id="trendanalysis">
-					<svg></svg>
-				</div>
-				<div class="item" id="conversionanalysis">
-					<svg></svg>
-				</div>
-				<div class="item" id="sessionanalysis">
-					<svg></svg>
-				</div>
-				<div class="item" id="backrefreshanalysis">
-					<svg></svg>
+		<div id="section">
+			<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+				<ol class="carousel-indicators">
+					<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+					<li data-target="#myCarousel" data-slide-to="1"></li>
+					<li data-target="#myCarousel" data-slide-to="2"></li>
+					<li data-target="#myCarousel" data-slide-to="3"></li>
+					<li data-target="#myCarousel" data-slide-to="4"></li>
+					<li data-target="#myCarousel" data-slide-to="5"></li>
+					<li data-target="#myCarousel" data-slide-to="6"></li>
+					<li data-target="#myCarousel" data-slide-to="7"></li>
+					<li data-target="#myCarousel" data-slide-to="8"></li>
+				</ol>
+				<!-- Wrapper for slides -->
+				<div class="carousel-inner" role="listbox">
+					<div class="item active" id="hitsbyday">
+						<svg></svg>
+					</div>
+					<div class="item" id="mostvisited">
+						<svg></svg>
+					</div>
+					<div class="item" id="geoanalysis">
+						<div id="map" style="height: 500px; width: 1250px"></div>
+					</div>
+					<div class="item" id="itemanalysis">
+						<svg></svg>
+					</div>
+					<div class="item" id="cartanalysis">
+						<svg></svg>
+					</div>
+					<div class="item" id="trendanalysis">
+						<svg></svg>
+					</div>
+					<div class="item" id="conversionanalysis">
+						<svg></svg>
+					</div>
+					<div class="item" id="sessionanalysis">
+						<svg></svg>
+					</div>
+					<div class="item" id="backrefreshanalysis">
+						<svg></svg>
+					</div>
 				</div>
 			</div>
-
-			<!-- Left and right controls -->
-
 		</div>
-
-
-
-	</div>
-
-
-
-
-
-	<div id="footer">Copyright © ClickAnalytics.com</div>
-
-
-<script>
-
- var citymap = {
-   chicago: {
-     lat: 41.878, 
-	lng: -87.629,
-     population: 2714856
-   },
-   newyork: {
-     lat: 40.714, lng: -74.005,
-     population: 8405837
-   },
-   losangeles: {
-     lat: 34.052, lng: -118.243,
-     population: 3857799
-   },
-   vancouver: {
-     lat: 49.25, lng: -123.1,
-     population: 603502
-   }
- };
-
-
-
-var mymapData = [{"rowkey":"2015-11-10_10925","hitCount":"22","state":"NY","longitude":"-74.29778","latitude":"41.211794","datekey":"2015-11-10","city":"Greenwood Lake"},{"rowkey":"2015-11-10_13157","hitCount":"17","state":"NY","longitude":"-75.72307","latitude":"43.209147","datekey":"2015-11-10","city":"Sylvan Beach"},{"rowkey":"2015-11-10_14839","hitCount":"26","state":"NY","longitude":"-77.63705","latitude":"42.129806","datekey":"2015-11-10","city":"Greenwood"}];
-
-function initiateGeoAnalysis(startDate, endDate)
-{
-d3.json( 
-"/ca/data/hits_by_location?startDate="+startDate+"&endDate=" + endDate, 
-	function(error, json)
-	{
-		if (error) return console.warn(error);
-
-		initMap(json);
-	});
-
-}
-var map;
- function initMap(mapData) {
-   // Create the map.
-   map = new google.maps.Map(document.getElementById('map'), {
-     zoom: 3,
-     center: {lat: 37.090, lng: -95.712},
-     mapTypeId: google.maps.MapTypeId.TERRAIN
-   });
-
-
-	for(var i=0; i<mapData.length; i++)
-	{
-		var cityCircle = new google.maps.Circle({
-       strokeColor: '#FF0000',
-       strokeOpacity: 0.8,
-       strokeWeight: 2,
-       fillColor: '#FF0000',
-       fillOpacity: 0.35,
-       map: map,
-       center: new centerItem(parseFloat(mapData[i].latitude), parseFloat(mapData[i].longitude)),
-       radius: Math.sqrt(parseInt(mapData[i].hitCount)) * 1000
-     });
-	}
-
- 
- }
-
-function centerItem(lat, lng)
-{
-	this.lat=lat;
-	this.lng=lng;
-	
-}
-
-</script>
- 
-</body>
+		<div id="footer">Copyright © ClickAnalytics.com</div>
+	</body>
 </html>
