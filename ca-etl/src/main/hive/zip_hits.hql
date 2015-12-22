@@ -1,0 +1,2 @@
+INSERT OVERWRITE DIRECTORY '/home/asadani/rampup/hive/hitsByZip' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' 
+select * from (select zipcode, concat(concat(concat(concat(eventYear, '-'), eventMonth),'-'),eventDate) as eventDateCon, count(*) as hitsByZip from event_data group by zipcode, concat(concat(concat(concat(eventYear, '-'), eventMonth),'-'),eventDate)) as INNER_QUERY, zip_lat_long_ref ZLLR where INNER_QUERY.zipcode = ZLLR.zipcode;

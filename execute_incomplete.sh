@@ -14,22 +14,6 @@ export HADOOP_HOME=/home/IMPETUS/asadani/Installs/hadoop-2.7.0
 
 export HIVE_HOME=/home/IMPETUS/asadani/Installs/apache-hive-1.2.1-bin
 
-$BASE_CODEBASE_PATH/data-generator/mvn clean package
-$BASE_CODEBASE_PATH/data-flattener/mvn clean package
-$BASE_CODEBASE_PATH/ca-etl/mvn clean package
-$BASE_CODEBASE_PATH/ca-web/mvn clean package
- 
-$BASE_CODEBASE_PATH/data-generator/mvn exec:java 
-
-$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -rmr -skipTrash /home/asadani/rampup/output*
-$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -rm -skipTrash /home/asadani/rampup/input/*
-$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -copyFromLocal ../user-traffic.log /home/asadani/rampup/input
-$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -copyFromLocal ../product_cat_ref_data.txt /home/asadani/rampup/input
-$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -copyFromLocal ../zipcode.csv /home/asadani/rampup/input
-
-$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hadoop jar $BASE_CODEBASE_PATH/data-flattener/target/data-flattener-0.0.1-SNAPSHOT.jar com.asadani.flattener.JSONDataFlattener $BASE_HDFS_PATH/input/user-traffic.log $BASE_HDFS_PATH/output/
-
-$BASE_INSTALLS_PATH/hbase-1.1.2/bin/hbase shell /home/IMPETUS/asadani/codebase/rampup/sandbox/ca-etl/src/main/hbase/hbase_schema
 
 $BASE_INSTALLS_PATH/pig-0.15.0/bin/pig $BASE_CODEBASE_PATH/ca-etl/src/main/pig/daily_hits.pig
 $BASE_INSTALLS_PATH/pig-0.15.0/bin/pig $BASE_CODEBASE_PATH/ca-etl/src/main/pig/item_visits.pig

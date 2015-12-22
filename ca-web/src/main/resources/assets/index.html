@@ -10,22 +10,23 @@
 		<link rel="stylesheet" type="text/css" href="css/nv.d3.css">
 		<link rel="stylesheet" type="text/css" href="css/layout.css">
 
+		
+		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 		<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAqqAfIxZeTBdDI0MX1WXliv1U4xtD8SY&callback=initiateGeoAnalysis"></script>
-
 		<script src="./lib/d3.min.js"></script>
 		<script src="./lib/nv.d3.min.js"></script>
+		<script src="./js/geo_analysis.js"></script>
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAqqAfIxZeTBdDI0MX1WXliv1U4xtD8SY&callback=initiateGeoAnalysis"></script>
 		<script src="./js/most_viewed_pages.js"></script>
 		<script src="./js/calendar.js"></script>
 		<script src="./js/itemvisits.js"></script>
 		<script src="./js/conversion.js"></script>
 		<script src="./js/cart_analysis.js"></script>
 		<script src="./js/hits_by_day.js"></script>
-		<script src="./js/session.js"></script>
-		<script src="./js/geo_analysis.js"></script>
+		<script src="./js/session.js"></script>		
 		<script src="./js/navigation.js"></script>
 	</head>
 	<body>
@@ -48,16 +49,14 @@
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">E-Commerce Analysis<span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="#" onClick="navigateCarousel(3);changeTitle('Item Visits');">Item Visits<a></li>
-						<li><a href="#" onClick="navigateCarousel(4);changeTitle('Shopping Cart');"></a></li>
-						<li><a href="#" onClick="navigateCarousel(5);changeTitle('Spending Trends');">Spending Trends</a></li>
-						<li><a href="#" onClick="navigateCarousel(6);changeTitle('Conversion Ratio');">Conversion Ratio</a></li>
+						<li><a href="#" onClick="navigateCarousel(4);changeTitle('Spending Trends');">Spending Trends</a></li>
+						<li><a href="#" onClick="navigateCarousel(5);changeTitle('Conversion Ratio');">Conversion Ratio</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">User Session Analysis <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="#" onClick="navigateCarousel(7);changeTitle('Session Activity');">Session Activity</a></li>
-						<li><a href="#" onClick="navigateCarousel(8);changeTitle('Back Refresh');">Back Refresh</a></li>
+						<li><a href="#" onClick="navigateCarousel(6);changeTitle('Session Activity');">Session Activity</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -83,10 +82,7 @@
 					<li data-target="#myCarousel" data-slide-to="4"></li>
 					<li data-target="#myCarousel" data-slide-to="5"></li>
 					<li data-target="#myCarousel" data-slide-to="6"></li>
-					<li data-target="#myCarousel" data-slide-to="7"></li>
-					<li data-target="#myCarousel" data-slide-to="8"></li>
 				</ol>
-				<!-- Wrapper for slides -->
 				<div class="carousel-inner" role="listbox">
 					<div class="item active" id="hitsbyday">
 						<svg></svg>
@@ -100,9 +96,6 @@
 					<div class="item" id="itemanalysis">
 						<svg></svg>
 					</div>
-					<div class="item" id="cartanalysis">
-						<svg></svg>
-					</div>
 					<div class="item" id="trendanalysis">
 						<svg></svg>
 					</div>
@@ -110,9 +103,6 @@
 						<svg></svg>
 					</div>
 					<div class="item" id="sessionanalysis">
-						<svg></svg>
-					</div>
-					<div class="item" id="backrefreshanalysis">
 						<svg></svg>
 					</div>
 				</div>
