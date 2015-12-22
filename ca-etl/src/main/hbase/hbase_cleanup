@@ -1,0 +1,13 @@
+disable 'USER_SESSION_DETAILS'
+drop 'USER_SESSION_DETAILS'
+
+disable 'DAILY_UPDATES'
+drop 'DAILY_UPDATES'
+
+disable 'SPENDING_TRENDS'
+drop 'SPENDING_TRENDS'
+
+disable 'HITS_BY_LOCATION'
+drop 'HITS_BY_LOCATION'
+
+exit

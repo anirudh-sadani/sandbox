@@ -54,16 +54,21 @@ public class Application implements Callable<List<String>> {
 
 	public static void main(String args[]) {
 		
-
+		String startDate=args[0];
+		
+		String[] dateSplitUp = startDate.split("-");
+		
 		ExecutorService executor = Executors.newFixedThreadPool(50);
 		
 		List<Future<List<String>>> list = new ArrayList<Future<List<String>>>();
 		
 		Calendar cal = Calendar.getInstance();
 		
-		cal.set(2015, 9, 22);
+		cal.set(Integer.parseInt(dateSplitUp[2]), Integer.parseInt(dateSplitUp[1])-1, Integer.parseInt(dateSplitUp[0]));
 		
 		long days = (Calendar.getInstance().getTimeInMillis() - cal.getTimeInMillis())/(1000*60*60*24);
+		
+		days-=2;
 		
 		for(int j = 1; j<= days; j++ )
 		{
@@ -87,7 +92,7 @@ public class Application implements Callable<List<String>> {
 			}
 			System.out.println("Done for : " + cal.getTime());
 			
-			cal.set(2015, 9, 22);
+			cal.set(Integer.parseInt(dateSplitUp[2]), Integer.parseInt(dateSplitUp[1])-1, Integer.parseInt(dateSplitUp[0]));
 			
 			cal.add(Calendar.DATE, j);
 		}

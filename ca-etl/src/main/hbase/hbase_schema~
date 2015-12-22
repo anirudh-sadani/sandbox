@@ -5,5 +5,3 @@ create 'DAILY_UPDATES', 'Output_Hits_By_Day', 'Output_Most_Visited_Pages'
 create 'SPENDING_TRENDS',  'Output_Spending_Trends'
 
 create 'HITS_BY_LOCATION', 'Output_Hits_By_Zip' 
-
-exit

@@ -106,7 +106,7 @@ public class JSONDataFlattener {
 			
 			time.setTimeInMillis(Long.parseLong(valuesStr[1]));
 			
-			multipleOutputs.write(NullWritable.get(), rkey,  ("days/" +(time.get(Calendar.MONTH) + 1 )+ "/"+ time.get(Calendar.DATE)+ "_" + time.get(Calendar.MONTH) + + Calendar.getInstance().get(Calendar.DATE)).toString());		
+			multipleOutputs.write(NullWritable.get(), rkey,  ("days/" +(time.get(Calendar.MONTH) + 1 )+ "/"+ time.get(Calendar.DATE)+ "_" + time.get(Calendar.MONTH)).toString());		
 			context.write(NullWritable.get(), rkey);
 					           
 		}	

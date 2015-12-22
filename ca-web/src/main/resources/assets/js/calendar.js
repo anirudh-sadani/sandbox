@@ -10,7 +10,7 @@ $(function() {
     	inititateItemVisits(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
     	//initiateGeoAnalysis(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
   }
-  cb(moment().subtract(45, 'days'), moment());
+  cb(moment().subtract(15, 'days'), moment());
 
   $('#reportrange').daterangepicker({
       ranges: {
