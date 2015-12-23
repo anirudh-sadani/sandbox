@@ -19,4 +19,4 @@ COUNT(PURCHASED_ITEMS) as PURCHASED;
 };
 
 
-STORE USER_BEHAVIOR INTO 'hbase://USER_SESSION_DETAILS' USING org.apache.pig.backend.hadoop.hbase.HBaseStorage ('Output_Product_Visits:CART_ITEMS, Output_Product_Visits:ITEMS_VIEWED_COUNT, Output_Product_Visits:WISHLIST, Output_Product_Visits:PURCHASED');
+STORE USER_BEHAVIOR INTO 'hbase://USER_SESSION_DETAILS' USING org.apache.pig.backend.hadoop.hbase.HBaseStorage ('Output_Product_Visits:ITEMS_VIEWED_COUNT, Output_Product_Visits:CART_ITEMS, Output_Product_Visits:WISHLIST, Output_Product_Visits:PURCHASED');

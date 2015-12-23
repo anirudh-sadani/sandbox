@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.asadani.ca.hbase.HBaseConnectionManager;
 import com.asadani.ca.hbase.HBaseConstants;
 import com.asadani.ca.hbase.HBaseQueryExecutor;
 

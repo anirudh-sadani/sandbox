@@ -5,7 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.ThreadLocalRandom;
@@ -20,6 +22,7 @@ public class JSONDataPojo {
 	HTTPDataPojo httpData;
 	long timestamp;
 	String userBrowser;
+	Map historyEventMap;
 
 	static long counter = 1;
 	static List<ZipRange> validZipRanges;
@@ -33,7 +36,12 @@ public class JSONDataPojo {
 				+ ThreadLocalRandom.current().nextInt(0, 256));
 
 		populateZipcode();
-
+		
+		historyEventMap = new HashMap<String, List>();
+		historyEventMap.put("viewed", new ArrayList<String>());
+		historyEventMap.put("cart", new ArrayList<String>());
+		historyEventMap.put("purchased", new ArrayList<String>());
+		
 		SessionInfo randomSession = sessionInfoList.get(ThreadLocalRandom.current().nextInt(0, sessionInfoList.size()));
 		httpData = new HTTPDataPojo(randomSession.getUserId(), randomSession.getAuthToken());
 
@@ -124,7 +132,7 @@ public class JSONDataPojo {
 	}
 
 	private void populateHTTPData() {
-		this.httpData.populateModel();
+		this.httpData.populateModel(this.historyEventMap);
 
 	}
 

@@ -65,7 +65,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>com.asadani.Application</mainClass>
+					<mainClass>com.asadani.EventGenerator</mainClass>
 					<arguments>
 						<argument>foo</argument>
 					</arguments>

@@ -12,7 +12,7 @@ function initiateSessionAnalysis(startDate, endDate){
 					if(propName == 'duration'){
 						var sessionItem = [];
 						sessionItem.push(json[i].datekey);
-						sessionItem.push(json[i][propName]/(1000*60));
+						sessionItem.push(json[i][propName]/(60));
 						sessionDuration.push(sessionItem );
 					}
 					if(propName == 'backCnt'){

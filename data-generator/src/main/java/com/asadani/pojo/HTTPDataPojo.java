@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.asadani.pojo.utils.URLPattern;
@@ -57,14 +58,60 @@ public class HTTPDataPojo {
 		
 	}
 	
-	public void populateModel() {
+	public void populateModel(Map historyEventMap) {
+		
+		
 		URLPattern up = urls.get(ThreadLocalRandom.current().nextInt(0, urls.size()));
 		this.httpMethod = up.getHttpMethod();
-		this.httpUrl = formAbsoluteURLFromPattern(up.getRequestURL());
+		String generatedURL = formAbsoluteURLFromPattern(up.getRequestURL());
+		boolean allowed = false;
 		
-		//this.headerParamAuthToken = "asdf";
-		//this.headerParamUserId= "example";
+		this.httpUrl = "NULL";
 
+		String product="";
+
+		//System.out.println("generatedURL " + generatedURL);
+		if(generatedURL.indexOf("view/product") != -1)
+		{
+			product=generatedURL.substring(13);
+			//System.out.println("product " + product);
+			((ArrayList)historyEventMap.get("viewed")).add(product);
+			allowed=true;
+		}
+		else if(generatedURL.indexOf("?action") != -1)
+		{
+			product = generatedURL.substring(13, generatedURL.indexOf("?"));
+			//System.out.println("else product " + product);
+		}			
+		else 
+			allowed=true;
+		
+		if(!allowed)
+		{
+			if(generatedURL.indexOf("buy") != -1)
+			{
+				//System.out.println("in buy" + product);
+
+				allowed = ((ArrayList)historyEventMap.get("cart")).contains(product);
+				//System.out.println("allowed " + allowed);
+				if (allowed)
+					((ArrayList)historyEventMap.get("buy")).add(product);
+					
+			}
+			else if(generatedURL.indexOf("addToCart") != -1)
+			{
+				//System.out.println("in addToCart" + product);
+
+				allowed = ((ArrayList)historyEventMap.get("viewed")).contains(product);
+				//System.out.println("allowed " + allowed);
+				if (allowed)
+					((ArrayList)historyEventMap.get("cart")).add(product);
+			}
+			else
+				allowed=true;
+		}		
+		if (allowed)
+			this.httpUrl = generatedURL;
 	}
 	
 	private String formAbsoluteURLFromPattern(String requestURL) {
@@ -73,9 +120,9 @@ public class HTTPDataPojo {
 		if(url.contains("[categoryId]"))
 			url = url.replace("[categoryId]", "C-" + ThreadLocalRandom.current().nextInt(0, 100));
 		if(url.contains("[productId]"))
-			url = url.replace("[productId]", "P-" + ThreadLocalRandom.current().nextInt(0, 1000));
+			url = url.replace("[productId]", "P-" + ThreadLocalRandom.current().nextInt(0, 50));
 		if(url.contains("[productIds]"))
-			url = url.replace("[productIds]", "P-" + ThreadLocalRandom.current().nextInt(0, 1000));
+			url = url.replace("[productIds]", "P-" + ThreadLocalRandom.current().nextInt(0, 50));
 		if(url.contains("[searchString]"))
 			url = url.replace("[searchString]", searchStrings[ThreadLocalRandom.current().nextInt(0, searchStrings.length-1)]);
 		if(url.contains("[action]"))

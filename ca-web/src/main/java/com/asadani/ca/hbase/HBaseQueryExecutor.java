@@ -13,8 +13,11 @@ import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
 import org.apache.hadoop.hbase.filter.FilterList;
 import org.apache.hadoop.hbase.filter.PrefixFilter;
+import org.apache.hadoop.hbase.filter.RowFilter;
+import org.apache.hadoop.hbase.filter.SubstringComparator;
 
 public class HBaseQueryExecutor {
 
@@ -56,7 +59,51 @@ public class HBaseQueryExecutor {
 		}
 		return resultList;
 	}
+    
 
+	public List<Map<byte[], byte[]>> fetchDataWithSubstringFilter(
+			String tableName, String columnFamily, String substringRowKeyPattern) {
+		Table table = null;
+		List<Map<byte[], byte[]>> resultList = new ArrayList();
+		try {
+			table = manager.getConnection().getTable(
+					TableName.valueOf(tableName));
+
+			Scan scan = new Scan();
+		
+			scan.setFilter(new RowFilter(CompareOp.EQUAL, new SubstringComparator(substringRowKeyPattern)));
+
+			scan.addFamily(Bytes.toBytes(columnFamily));
+			ResultScanner scanner = table.getScanner(scan);
+			for (Result result = scanner.next(); result != null; result = scanner
+					.next()) {
+				NavigableMap<byte[], byte[]> familyMap = result
+						.getFamilyMap(Bytes.toBytes(columnFamily));
+
+				String rowKeyData = Bytes.toString(result.getRow());
+
+				familyMap.put(Bytes.toBytes("rowkey"), rowKeyData.getBytes());
+
+				if (rowKeyData.indexOf("_") != -1)
+					familyMap.put(Bytes.toBytes("datekey"), rowKeyData
+							.substring(0, rowKeyData.indexOf("_")).getBytes());
+
+				resultList.add(familyMap);
+			}
+			return resultList;
+		} catch (IOException e) {
+
+		} finally {
+			if (table != null)
+				try {
+					table.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+		}
+		return resultList;
+	}
 	public List<Map<byte[], byte[]>> fetchDataWithPrefixFilter(
 			String tableName, String columnFamily, String fromRowKeyPattern,
 			String toRowKeyPattern) {

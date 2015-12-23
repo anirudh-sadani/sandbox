@@ -8,7 +8,7 @@ GET,data/category/[categoryId]
 GET,data/product?categoryId=[categoryId]
 GET,data/product?searchString=[searchString]
 PUT,data/product/[productId]?action=[action]
-POST,data/cart/purchase/products=[productIds]
+POST,data/purchase/products=[productIds]
 GET,view/home
 GET,view/category/[categoryId]
 GET,view/product/[productId]

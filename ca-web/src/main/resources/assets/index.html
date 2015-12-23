@@ -28,6 +28,7 @@
 		<script src="./js/hits_by_day.js"></script>
 		<script src="./js/session.js"></script>		
 		<script src="./js/navigation.js"></script>
+		<script src="./js/user_analysis.js"></script>
 	</head>
 	<body>
 		<nav class="navbar navbar-inverse">
@@ -57,6 +58,7 @@
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">User Session Analysis <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="#" onClick="navigateCarousel(6);changeTitle('Session Activity');">Session Activity</a></li>
+						<li><a href="#" onClick="navigateCarousel(7);changeTitle('User Activity');">User Activity</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -82,6 +84,7 @@
 					<li data-target="#myCarousel" data-slide-to="4"></li>
 					<li data-target="#myCarousel" data-slide-to="5"></li>
 					<li data-target="#myCarousel" data-slide-to="6"></li>
+					<li data-target="#myCarousel" data-slide-to="7"></li>
 				</ol>
 				<div class="carousel-inner" role="listbox">
 					<div class="item active" id="hitsbyday">
@@ -104,6 +107,14 @@
 					</div>
 					<div class="item" id="sessionanalysis">
 						<svg></svg>
+					</div>
+					<div class="item" id="usersessionanalysis">
+						<form>
+							E-mail:<input type="email" id="emailField" name="email">
+							<input type="button" value="Submit" onclick="generateUserActivity();">
+						</form>
+						<svg id="usersessionanalysissvg1"></svg>
+						<svg id="usersessionanalysissvg2"></svg>
 					</div>
 				</div>
 			</div>

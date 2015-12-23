@@ -15,6 +15,8 @@ echo $1
 
 mvn -f $BASE_CODEBASE_PATH/data-generator/pom.xml exec:java -Dexec.args=$2
 
+echo "Data generation complete"
+
 $BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -rmr -skipTrash /home/asadani/rampup/output*
 $BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -rmr -skipTrash /home/asadani/rampup/hive/eventData/*
 $BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -rm -skipTrash /home/asadani/rampup/input/*
@@ -25,7 +27,7 @@ if [ $1 = "COMPLETE" ];
 then
    	echo "Copying reference data files"
 	$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -copyFromLocal $BASE_CODEBASE_PATH/ca-etl/src/main/resources/reference-data/prod_cat_ref_data.txt /home/asadani/rampup/input
-	$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -copyFromLocal $BASE_CODEBASE_PATHca-etl/src/main/resources/reference-data/zipcode.csv /home/asadani/rampup/input
+	$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -copyFromLocal $BASE_CODEBASE_PATH/ca-etl/src/main/resources/reference-data/zipcode.csv /home/asadani/rampup/input
 
 	echo "Creating Hive & HBase schema"
 	
@@ -61,7 +63,7 @@ $BASE_INSTALLS_PATH/apache-hive-1.2.1-bin/bin/hive -f $BASE_CODEBASE_PATH/ca-etl
 $BASE_INSTALLS_PATH/pig-0.15.0/bin/pig $BASE_CODEBASE_PATH/ca-etl/src/main/pig/zip_hits_count.pig
 $BASE_INSTALLS_PATH/pig-0.15.0/bin/pig $BASE_CODEBASE_PATH/ca-etl/src/main/pig/spending_trends.pig
 
-export prefixDate=`date +%Y%m%d`
+export prefixDate=`date +%Y%m%d%H%M`
 
 $BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -mkdir /home/asadani/rampup/archive/mroutput/$prefixDate
 

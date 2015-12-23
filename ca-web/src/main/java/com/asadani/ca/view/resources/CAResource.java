@@ -106,6 +106,22 @@ public class CAResource {
 		return transformData(spendingTrendsDAO.getSpendingTrendsData(startDate,
 				endDate));
 	}
+	
+	@GET
+	@Path("item_visits_by_user")
+	public List<Map<String, String>> itemVisitsByUser(
+			@QueryParam("emailId") String emailId) {
+
+		return transformData(sessionAnalysisDao.getItemVisitsForUser(emailId));
+	}
+	
+	@GET
+	@Path("session_details_by_user")
+	public List<Map<String, String>> sessionDetailsByUser(
+			@QueryParam("emailId") String emailId) {
+
+		return transformData(sessionAnalysisDao.getSessionDataForUser(emailId));
+	}
 
 	private List<Map<String, String>> transformData(
 			List<Map<byte[], byte[]>> result) {
@@ -126,5 +142,12 @@ public class CAResource {
 			finalResult.add(resultMap);
 		}
 		return finalResult;
+	}
+	
+	public static void main(String args[])
+	{
+		CAResource ca = new CAResource();
+		
+		System.out.println(ca.sessionDetailsByUser("rob@somemail.com"));
 	}
 }
