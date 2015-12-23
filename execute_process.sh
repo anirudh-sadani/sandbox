@@ -24,9 +24,8 @@ $BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -rm -skipTrash /home/asadani/rampu
 if [ $1 = "COMPLETE" ];
 then
    	echo "Copying reference data files"
-
-	$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -copyFromLocal $BASE_CODEBASE_PATH/prod_cat_ref_data.txt /home/asadani/rampup/input
-	$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -copyFromLocal $BASE_CODEBASE_PATH/zipcode.csv /home/asadani/rampup/input
+	$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -copyFromLocal $BASE_CODEBASE_PATH/ca-etl/src/main/resources/reference-data/prod_cat_ref_data.txt /home/asadani/rampup/input
+	$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -copyFromLocal $BASE_CODEBASE_PATHca-etl/src/main/resources/reference-data/zipcode.csv /home/asadani/rampup/input
 
 	echo "Creating Hive & HBase schema"
 	

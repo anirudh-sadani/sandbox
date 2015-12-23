@@ -1,7 +1,0 @@
-create 'USER_SESSION_DETAILS', 'Output_Product_Visits', 'Output_Session_Analysis' 
-
-create 'DAILY_UPDATES', 'Output_Hits_By_Day', 'Output_Most_Visited_Pages'
-
-create 'SPENDING_TRENDS',  'Output_Spending_Trends'
-
-create 'HITS_BY_LOCATION', 'Output_Hits_By_Zip' 
