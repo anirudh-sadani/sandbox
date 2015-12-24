@@ -6,8 +6,8 @@ export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:/home/IMPETUS/asadani/Installs/apache-
 export PATH=/home/IMPETUS/asadani/Installs/pig-0.15.0/bin:/home/IMPETUS/asadani/Installs/hadoop-2.7.0/bin:/home/IMPETUS/asadani/Installs/apache-hive-1.2.1-bin/bin:$PATH
 export HADOOP_HOME=/home/IMPETUS/asadani/Installs/hadoop-2.7.0
 export HIVE_HOME=/home/IMPETUS/asadani/Installs/apache-hive-1.2.1-bin
-mvn -f $BASE_CODEBASE_PATH/data-generator/pom.xml clean package
-mvn -f $BASE_CODEBASE_PATH/data-flattener/pom.xml clean package
+mvn -f $BASE_CODEBASE_PATH/ca-datagen/pom.xml clean package
+mvn -f $BASE_CODEBASE_PATH/ca-flattener/pom.xml clean package
 mvn -f $BASE_CODEBASE_PATH/ca-etl/pom.xml clean package
 mvn -f $BASE_CODEBASE_PATH/ca-web/pom.xml clean package
 
@@ -15,7 +15,7 @@ rm $BASE_CODEBASE_PATH/user-traffic.log
 
 echo $1
 
-mvn -f $BASE_CODEBASE_PATH/data-generator/pom.xml exec:java -Dexec.args=$2
+mvn -f $BASE_CODEBASE_PATH/ca-datagen/pom.xml exec:java -Dexec.args=$2
 
 echo "Data generation complete"
 
@@ -39,7 +39,7 @@ fi
 
 $BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -copyFromLocal $BASE_CODEBASE_PATH/user-traffic.log /home/asadani/rampup/input
 
-$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hadoop jar $BASE_CODEBASE_PATH/data-flattener/target/data-flattener-0.0.1-SNAPSHOT.jar com.asadani.flattener.JSONDataFlattener $BASE_HDFS_PATH/input/user-traffic.log $BASE_HDFS_PATH/output/
+$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hadoop jar $BASE_CODEBASE_PATH/ca-flattener/target/ca-flattener-0.0.1-SNAPSHOT.jar com.asadani.flattener.JSONDataFlattener $BASE_HDFS_PATH/input/user-traffic.log $BASE_HDFS_PATH/output/
 
 
 

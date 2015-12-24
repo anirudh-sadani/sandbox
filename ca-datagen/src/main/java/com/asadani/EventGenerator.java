@@ -1,0 +1,106 @@
+package com.asadani;
+
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadLocalRandom;
+
+import org.apache.log4j.Logger;
+
+import com.asadani.pojo.JSONDataPojo;
+
+/**
+ * Hello world!
+ *
+ */
+
+public class EventGenerator implements Callable<List<String>> {
+
+	final static Logger logger = Logger.getLogger(EventGenerator.class);
+	
+	int days;
+	Calendar startDate;
+	
+	public EventGenerator(Calendar start)
+	{
+		startDate = start;
+				
+	}
+	@Override
+	public List call() throws Exception {
+		
+		List<String> temp = new ArrayList<String>();
+		JSONDataPojo jsd = new JSONDataPojo();
+		
+		int i = 0;
+		int max = ThreadLocalRandom.current().nextInt(50, 150);
+		while(i<max)
+		{
+			jsd.populateModel(startDate);
+			
+			if(jsd.toString().indexOf("NULL") == -1)
+				logger.debug(jsd.toString());
+			
+			
+			temp.add(jsd.toString());
+			
+			Thread.sleep(50);
+			i++;
+		}		
+		return temp;
+	}
+
+	public static void main(String args[]) {
+		
+		String startDate=args[0];
+		
+		String[] dateSplitUp = startDate.split("-");
+		
+		ExecutorService executor = Executors.newFixedThreadPool(50);
+		
+		List<Future<List<String>>> list = new ArrayList<Future<List<String>>>();
+		
+		Calendar cal = Calendar.getInstance();
+		
+		cal.set(Integer.parseInt(dateSplitUp[2]), Integer.parseInt(dateSplitUp[1])-1, Integer.parseInt(dateSplitUp[0]));
+		
+		long days = (Calendar.getInstance().getTimeInMillis() - cal.getTimeInMillis())/(1000*60*60*24);
+		
+		//days-=4;
+		
+		for(int j = 1; j <= days; j++ )
+		{
+			Callable<List<String>> callable = new EventGenerator(cal);
+			int numberOfUsers =  ThreadLocalRandom.current().nextInt(200, 300);
+			for (int i = 0; i < numberOfUsers; i++) {
+				
+				Future<List<String>> future = executor.submit(callable);
+				
+				list.add(future);
+			}
+			
+			for (Future<List<String>> fu : list)
+			{
+				try {
+					fu.get();
+				} catch (InterruptedException | ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			System.out.println("Generate data for : " + cal.getTime());
+			
+			cal.set(Integer.parseInt(dateSplitUp[2]), Integer.parseInt(dateSplitUp[1])-1, Integer.parseInt(dateSplitUp[0]));
+			
+			cal.add(Calendar.DATE, j);
+		}
+		
+		executor.shutdown();				
+	}	
+}

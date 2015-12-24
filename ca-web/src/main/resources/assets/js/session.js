@@ -54,17 +54,17 @@ function initiateSessionAnalysis(startDate, endDate){
 					values: updated_sessionDuration,      //values - represents the array of {x,y} data points
 					key: 'Duration',
 					"bar": true, //key  - the name of the series.
-					color: '#ff7f0e'  //color - optional: choose your own line color.
+					color: '#6699ff'  //color - optional: choose your own line color.
 				},
 				{
 					values: updated_back,      //values - represents the array of {x,y} data points
 					key: 'Back', //key  - the name of the series.
-					color: '#117f2e'  //color - optional: choose your own line color.
+					color: '#ff0000'  //color - optional: choose your own line color.
 				},
 				{
 					values: updated_refresh,      //values - represents the array of {x,y} data points
 					key: 'Refresh', //key  - the name of the series.
-					color: '#717f11'  //color - optional: choose your own line color.
+					color: '#ffff1a'  //color - optional: choose your own line color.
 				}].map(function(series){
 	            	series.values = series.values.map
 					(

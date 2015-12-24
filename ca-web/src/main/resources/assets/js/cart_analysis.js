@@ -17,7 +17,7 @@ function initiateCartAnalysis(startDate, endDate)
 function drawSunBurst(chartData)
 {
 	var chart;
-    nv.addGraph(function() {
+    	nv.addGraph(function() {
         chart = nv.models.sunburstChart();
         chart.color(d3.scale.category20c());
         d3.select("#trendanalysis svg")
