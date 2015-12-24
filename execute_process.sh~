@@ -11,9 +11,13 @@ mvn -f $BASE_CODEBASE_PATH/data-flattener/pom.xml clean package
 mvn -f $BASE_CODEBASE_PATH/ca-etl/pom.xml clean package
 mvn -f $BASE_CODEBASE_PATH/ca-web/pom.xml clean package
 
+rm $BASE_CODEBASE_PATH/user-traffic.log
+
 echo $1
 
 mvn -f $BASE_CODEBASE_PATH/data-generator/pom.xml exec:java -Dexec.args=$2
+
+echo "Data generation complete"
 
 $BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -rmr -skipTrash /home/asadani/rampup/output*
 $BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -rmr -skipTrash /home/asadani/rampup/hive/eventData/*

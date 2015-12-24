@@ -43,9 +43,13 @@ public class EventGenerator implements Callable<List<String>> {
 		while(i<max)
 		{
 			jsd.populateModel(startDate);
-			temp.add(jsd.toString());
+			
 			if(jsd.toString().indexOf("NULL") == -1)
 				logger.debug(jsd.toString());
+			
+			
+			temp.add(jsd.toString());
+			
 			Thread.sleep(50);
 			i++;
 		}		
@@ -68,9 +72,9 @@ public class EventGenerator implements Callable<List<String>> {
 		
 		long days = (Calendar.getInstance().getTimeInMillis() - cal.getTimeInMillis())/(1000*60*60*24);
 		
-		days-=4;
+		//days-=4;
 		
-		for(int j = 1; j< days; j++ )
+		for(int j = 1; j <= days; j++ )
 		{
 			Callable<List<String>> callable = new EventGenerator(cal);
 			int numberOfUsers =  ThreadLocalRandom.current().nextInt(200, 300);
@@ -81,7 +85,7 @@ public class EventGenerator implements Callable<List<String>> {
 				list.add(future);
 			}
 			
-			/*for (Future<List<String>> fu : list)
+			for (Future<List<String>> fu : list)
 			{
 				try {
 					fu.get();
@@ -89,7 +93,7 @@ public class EventGenerator implements Callable<List<String>> {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}*/
+			}
 			System.out.println("Generate data for : " + cal.getTime());
 			
 			cal.set(Integer.parseInt(dateSplitUp[2]), Integer.parseInt(dateSplitUp[1])-1, Integer.parseInt(dateSplitUp[0]));

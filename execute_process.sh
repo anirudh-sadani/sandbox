@@ -11,6 +11,8 @@ mvn -f $BASE_CODEBASE_PATH/data-flattener/pom.xml clean package
 mvn -f $BASE_CODEBASE_PATH/ca-etl/pom.xml clean package
 mvn -f $BASE_CODEBASE_PATH/ca-web/pom.xml clean package
 
+rm $BASE_CODEBASE_PATH/user-traffic.log
+
 echo $1
 
 mvn -f $BASE_CODEBASE_PATH/data-generator/pom.xml exec:java -Dexec.args=$2

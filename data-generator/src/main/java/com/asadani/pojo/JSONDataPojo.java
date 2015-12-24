@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.asadani.pojo.utils.SessionInfo;
@@ -23,6 +22,8 @@ public class JSONDataPojo {
 	long timestamp;
 	String userBrowser;
 	Map historyEventMap;
+
+	
 
 	static long counter = 1;
 	static List<ZipRange> validZipRanges;
@@ -127,6 +128,9 @@ public class JSONDataPojo {
 						.getInstance().get(Calendar.SECOND) + counter));
 
 		counter++;
+		
+		if(counter > (60*12*60))
+			counter = 0;
 		setTimestamp(temp.getTimeInMillis());
 
 	}
@@ -175,6 +179,14 @@ public class JSONDataPojo {
 
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
+	}
+	
+	public Map getHistoryEventMap() {
+		return historyEventMap;
+	}
+
+	public void setHistoryEventMap(Map historyEventMap) {
+		this.historyEventMap = historyEventMap;
 	}
 
 	public String toString() {

@@ -91,12 +91,19 @@ public class HTTPDataPojo {
 			if(generatedURL.indexOf("buy") != -1)
 			{
 				//System.out.println("in buy" + product);
-
-				allowed = ((ArrayList)historyEventMap.get("cart")).contains(product);
-				//System.out.println("allowed " + allowed);
-				if (allowed)
-					((ArrayList)historyEventMap.get("buy")).add(product);
-					
+				ArrayList temp = (ArrayList)historyEventMap.get("cart");
+				if(temp.size() >= 2)
+				{
+					product = (String)
+								(temp).get(ThreadLocalRandom.current().nextInt(1, temp.size()));
+					generatedURL = "data/product/" + product+ "?action=buy";
+					allowed = true;
+					//System.out.println("allowed " + allowed);
+					if (allowed)
+						((ArrayList)historyEventMap.get("purchased")).add(product);
+				}
+				else
+					allowed = false;
 			}
 			else if(generatedURL.indexOf("addToCart") != -1)
 			{

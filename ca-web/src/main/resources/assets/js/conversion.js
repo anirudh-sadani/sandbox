@@ -51,7 +51,7 @@ function drawConversion(result1){
 	        .showXAxis(true);
 		chart.yAxis     //Chart y-axis settings
 			.axisLabel('Counts')
-		    .tickFormat(d3.format('.02f'));
+		    .tickFormat(d3.format('.08f'));
  		chart.xAxis
        		.axisLabel('Date')
        		.rotateLabels(-45)
