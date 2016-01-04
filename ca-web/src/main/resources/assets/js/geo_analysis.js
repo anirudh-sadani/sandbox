@@ -1,6 +1,6 @@
 function initiateGeoAnalysis(){
   d3.json( 
-    "/ca/data/hits_by_location?startDate=06-10-2015&endDate=21-12-2015", 
+    "/ca/data/hits_by_location?startDate=06-11-2015&endDate=21-12-2015", 
 	   function(error, json){
 		  if (error) return console.warn(error);
 		  initMap(json);
@@ -18,7 +18,7 @@ function initMap(mapData) {
   // Create the map.
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 4,
-    center: {lat: 40, lng: -105},
+    center: {lat: 50, lng: -145},
     mapTypeId: google.maps.MapTypeId.TERRAIN
     });
 

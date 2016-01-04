@@ -1,8 +1,5 @@
 	function generateUserActivity()
 	{
-		alert(document.getElementById('emailField').value);
-
-
 		d3.json(
 	"/ca/data/item_visits_by_user?emailId="+document.getElementById('emailField').value, 
 	function(error, json){

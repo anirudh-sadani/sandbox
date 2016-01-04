@@ -6,6 +6,8 @@ export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:/home/IMPETUS/asadani/Installs/apache-
 export PATH=/home/IMPETUS/asadani/Installs/pig-0.15.0/bin:/home/IMPETUS/asadani/Installs/hadoop-2.7.0/bin:/home/IMPETUS/asadani/Installs/apache-hive-1.2.1-bin/bin:$PATH
 export HADOOP_HOME=/home/IMPETUS/asadani/Installs/hadoop-2.7.0
 export HIVE_HOME=/home/IMPETUS/asadani/Installs/apache-hive-1.2.1-bin
+export prefixDate=`date +%Y%m%d%H%M`
+
 mvn -f $BASE_CODEBASE_PATH/ca-datagen/pom.xml clean package
 mvn -f $BASE_CODEBASE_PATH/ca-flattener/pom.xml clean package
 mvn -f $BASE_CODEBASE_PATH/ca-etl/pom.xml clean package
@@ -18,6 +20,10 @@ echo $1
 mvn -f $BASE_CODEBASE_PATH/ca-datagen/pom.xml exec:java -Dexec.args=$2
 
 echo "Data generation complete"
+
+$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -mkdir /home/asadani/rampup/archive/rawData/$prefixDate
+
+$BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -mv /home/asadani/rampup/input/user-traffic.log /home/asadani/rampup/archive/rawData/$prefixDate
 
 $BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -rmr -skipTrash /home/asadani/rampup/output*
 $BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -rmr -skipTrash /home/asadani/rampup/hive/eventData/*
@@ -65,7 +71,7 @@ $BASE_INSTALLS_PATH/apache-hive-1.2.1-bin/bin/hive -f $BASE_CODEBASE_PATH/ca-etl
 $BASE_INSTALLS_PATH/pig-0.15.0/bin/pig $BASE_CODEBASE_PATH/ca-etl/src/main/pig/zip_hits_count.pig
 $BASE_INSTALLS_PATH/pig-0.15.0/bin/pig $BASE_CODEBASE_PATH/ca-etl/src/main/pig/spending_trends.pig
 
-export prefixDate=`date +%Y%m%d%H%M`
+
 
 $BASE_INSTALLS_PATH/hadoop-2.7.0/bin/hdfs dfs -mkdir /home/asadani/rampup/archive/mroutput/$prefixDate
 

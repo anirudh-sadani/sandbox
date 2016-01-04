@@ -5,7 +5,8 @@ $(function() {
     	initiateSessionAnalysis(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
     	initiateHitsByDay(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
     	initiateMostViewed(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
-    	initiateCartAnalysis(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
+    	//initiateCartAnalysis(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
+    	initiateCartAnalysis('15-12-2015', end.format('DD-MM-YYYY'));
     	inititateConversion(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
     	inititateItemVisits(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
     	//initiateGeoAnalysis(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));

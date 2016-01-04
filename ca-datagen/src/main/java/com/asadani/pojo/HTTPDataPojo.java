@@ -29,6 +29,8 @@ public class HTTPDataPojo {
 		headerParamAuthToken = token;
 	}
 	
+	static int prodCount = 0;
+	
 	static List<URLPattern> urls;
 	
 	static
@@ -60,7 +62,7 @@ public class HTTPDataPojo {
 	
 	public void populateModel(Map historyEventMap) {
 		
-		
+		prodCount ++;
 		URLPattern up = urls.get(ThreadLocalRandom.current().nextInt(0, urls.size()));
 		this.httpMethod = up.getHttpMethod();
 		String generatedURL = formAbsoluteURLFromPattern(up.getRequestURL());
@@ -117,7 +119,7 @@ public class HTTPDataPojo {
 			else
 				allowed=true;
 		}		
-		if (allowed)
+		if (allowed || (prodCount % 12 == 0))
 			this.httpUrl = generatedURL;
 	}
 	
